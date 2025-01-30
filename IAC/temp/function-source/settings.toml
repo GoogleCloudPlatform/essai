@@ -1,0 +1,11 @@
+GCP_PROJECT_ID='redacao-gemini-prod'
+GCP_LOCATION='southamerica-east1' 
+
+PROMPT_CORRECAO="src/prompts/template-correcao-enem.yml.j2"
+PROMPT_SUMARIZACAO='src/prompts/template-sumarizacao-enem.yml.j2'
+PROMPT_VALIDACAO='src/prompts/template-validacao-enem.yml.j2'
+
+
+DB_USER="93011518676-compute@developer.gserviceaccount.com"
+DB_DATABASE="postgres"
+INSTANCE_CONNECTION_NAME="redacao-gemini-prod:southamerica-east1:redacao-422d6abe"

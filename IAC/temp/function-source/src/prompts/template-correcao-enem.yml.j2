@@ -1,0 +1,333 @@
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# ---
+name: Essay Correction
+description: Um prompt para a correção de redações seguindos as rúbricas do ENEM.
+model:
+  model_name: gemini-1.5-pro-002
+  generation_config:
+    temperature: 0.3
+    response_mime_type: application/json
+    response_schema:
+      type: object
+      properties:
+        competencia_2:
+          type: object
+          properties:
+            notas:
+              type: object
+              properties:
+                compreensao_proposta:
+                  type: integer
+                  description: Compreensão da proposta de redação (Notas de 0 a 10)
+                dominio_conteudos:
+                  type: integer
+                  description: Domínio dos conteúdos (Notas de 0 a 10)
+                repertorio_sociocultural:
+                  type: integer
+                  description: Repertório sociocultural (Notas de 0 a 10)
+              required:
+                - compreensao_proposta
+                - dominio_conteudos
+                - repertorio_sociocultural
+            flags:
+              type: object
+              properties:
+                fuga_tema:
+                  type: boolean
+                  description: Fuga total ao tema
+                tangenciamento_tema:
+                  type: boolean
+                  description: Tangenciamento ao tema
+                nao_atendimento_tipo_textual:
+                  type: boolean
+                  description: Não atendimento ao tipo textual
+              required:
+                - fuga_tema
+                - tangenciamento_tema
+                - nao_atendimento_tipo_textual
+            descricoes:
+              type: object
+              properties:
+                desc_compreensao_proposta:
+                  type: string
+                  description: Descrição com exemplos do texto do motivo da nota atribuida
+                    na avaliação da compreensao_proposta
+                desc_dominio_conteudos:
+                  type: string
+                  description: Descrição com exemplos do texto do motivo da nota atribuida
+                    na avaliação do dominio_conteudos
+                desc_repertorio_sociocultural:
+                  type: string
+                  description: Descrição com exemplos do texto do motivo da nota atribuida
+                    na avaliação do repertorio_sociocultural
+                desc_fuga_tema:
+                  type: string
+                  description: Descrição com exemplos do texto do motivo da nota atribuida
+                    na avaliação da fuga_tema
+                desc_tangenciamento_tema:
+                  type: string
+                  description: Descrição com exemplos do texto do motivo da nota atribuida
+                    na avaliação do tangenciamento_tema
+                desc_nao_atendimento_tipo_textual:
+                  type: string
+                  description: Descrição com exemplos do texto do motivo da nota atribuida
+                    na avaliação do nao_atendimento_tipo_textual
+              required:
+                - desc_compreensao_proposta
+                - desc_dominio_conteudos
+                - desc_repertorio_sociocultural
+                - desc_fuga_tema
+                - desc_tangenciamento_tema
+                - desc_nao_atendimento_tipo_textual
+          required:
+            - notas
+            - descricoes
+            - flags
+        competencia_3:
+          type: object
+          properties:
+            notas:
+              type: object
+              properties:
+                organizacao_textual:
+                  type: integer
+                  description: Organização textual (Notas de 0 a 10)
+                selecao_argumentos:
+                  type: integer
+                  description: Seleção de argumentos (Notas de 0 a 10)
+                articulacao_ideias:
+                  type: integer
+                  description: Articulação de ideias (Notas de 0 a 10)
+                defesa_ponto_vista:
+                  type: integer
+                  description: Defesa do ponto de vista (Notas de 0 a 10)
+              required:
+                - organizacao_textual
+                - selecao_argumentos
+                - articulacao_ideias
+                - defesa_ponto_vista
+            descricoes:
+              type: object
+              properties:
+                organizacao_textual:
+                  type: string
+                  description: Descrição com exemplos do texto do motivo da nota atribuida
+                    na Organização textual
+                selecao_argumentos:
+                  type: string
+                  description: Descrição com exemplos do texto do motivo da nota atribuida
+                    na Seleção de argumentos
+                articulacao_ideias:
+                  type: string
+                  description: Descrição com exemplos do texto do motivo da nota atribuida
+                    na Articulação de ideias
+                defesa_ponto_vista:
+                  type: string
+                  description: Descrição com exemplos do texto do motivo da nota atribuida
+                    na Defesa do ponto de vista
+              required:
+                - organizacao_textual
+                - selecao_argumentos
+                - articulacao_ideias
+                - defesa_ponto_vista
+          required:
+            - notas
+            - descricoes
+        competencia_4:
+          type: object
+          properties:
+            notas:
+              type: object
+              properties:
+                coesao_textual:
+                  type: integer
+                  description: Coesão textual (Notas de 0 a 10)
+                dominio_recursos_coesivos:
+                  type: integer
+                  description: Domínio dos recursos coesivos (Notas de 0 a 10)
+                referenciacao:
+                  type: integer
+                  description: Referênciação (Notas de 0 a 10)
+                estrutura_paragrafo:
+                  type: integer
+                  description: Estruturação dos parágrafos (Notas de 0 a 10)
+                estrutura_periodos:
+                  type: integer
+                  description: Estruturação dos períodos (Notas de 0 a 10)
+              required:
+                - coesao_textual
+                - dominio_recursos_coesivos
+                - referenciacao
+                - estrutura_paragrafo
+                - estrutura_periodos
+            descricoes:
+              type: object
+              properties:
+                coesao_textual:
+                  type: string
+                  description: Descrição com exemplos do texto do motivo da nota atribuida
+                    na Coesão textual
+                dominio_recursos_coesivos:
+                  type: string
+                  description: Descrição com exemplos do texto do motivo da nota atribuida
+                    na Domínio dos recursos coesivos
+                referenciacao:
+                  type: string
+                  description: Descrição com exemplos do texto do motivo da nota atribuida
+                    na Referênciação
+                estrutura_paragrafo:
+                  type: string
+                  description: Descrição com exemplos do texto do motivo da nota atribuida
+                    na Estruturação dos parágrafos
+                estrutura_periodos:
+                  type: string
+                  description: Descrição com exemplos do texto do motivo da nota atribuida
+                    na Estruturação dos períodos
+              required:
+                - coesao_textual
+                - dominio_recursos_coesivos
+                - referenciacao
+                - estrutura_paragrafo
+                - estrutura_periodos
+          required:
+            - notas
+            - descricoes
+        competencia_5:
+          type: object
+          properties:
+            notas:
+              type: object
+              properties:
+                compreensao_problema:
+                  type: integer
+                  description: Compreensão do problema (Notas de 0 a 10)
+                proposta_intervencao:
+                  type: integer
+                  description: Proposta de intervenção (Notas de 0 a 10)
+                viabilidade_proposta:
+                  type: integer
+                  description: Viabilidade da proposta (Notas de 0 a 10)
+              required:
+                - compreensao_problema
+                - proposta_intervencao
+                - viabilidade_proposta
+            flags:
+              type: object
+              properties:
+                respeito_direitos_humanos:
+                  type: boolean
+                  description: Respeito aos direitos humanos
+              required:
+                - respeito_direitos_humanos
+            descricoes:
+              type: object
+              properties:
+                compreensao_problema:
+                  type: string
+                  description: 'Descrição com exemplos do texto do motivo da nota atribuida
+                    na Compreensão do problema '
+                proposta_intervencao:
+                  type: string
+                  description: Descrição com exemplos do texto do motivo da nota atribuida
+                    na Proposta de intervenção
+                viabilidade_proposta:
+                  type: string
+                  description: Descrição com exemplos do texto do motivo da nota atribuida
+                    na Viabilidade da proposta
+              required:
+                - compreensao_problema
+                - proposta_intervencao
+                - viabilidade_proposta
+          required:
+            - notas
+            - flags
+            - descricoes
+      required:
+        - competencia_2
+        - competencia_3
+        - competencia_4
+        - competencia_5
+  system_instruction: |
+    Você é um professor que está analisando uma redação do ENEM, um exame para o final do Ensino Medio no Brasil.
+
+    Você está utilizando os seguintes parâmetros com uma nota de 0 a 10 para cada:
+
+    **Competência I: Demonstrar domínio da modalidade escrita formal da língua portuguesa:**
+
+    - **Domínio da norma culta da Língua Portuguesa:** ortografia, acentuação gráfica, emprego do hífen, uso de maiúsculas e minúsculas,  separação silábica (translineação), regência verbal e nominal, concordância verbal e nominal, tempos e modos verbais, pontuação, paralelismo sintático, emprego de pronomes e crase, etc.
+    - **Adequação à modalidade escrita formal:** ausência de uso de registro informal e/ou de marcas de oralidade.
+    - **Escolhas lexicais adequadas:** uso de vocabulário preciso, que significa que as palavras selecionadas são usadas em seu sentido correto e são apropriadas ao contexto em que aparecem.
+    - **Estrutura sintática:** presença de períodos bem estruturados e completos, com frases claras e coesas, evitando períodos truncados, justaposição de palavras, ausência de termos ou excesso de palavras.
+
+    **Competência II: Compreender a proposta de redação e aplicar conceitos das várias áreas de conhecimento para desenvolver o tema, dentro dos limites estruturais do texto dissertativo-argumentativo em prosa:**
+
+    - **Compreensão da proposta de redação:** identificação do tema, do tipo de texto solicitado e do ponto de vista a ser defendido.
+    - **Domínio dos conteúdos:** demonstração de conhecimento sobre o tema, utilizando conceitos de diferentes áreas do conhecimento, sem se restringir aos textos motivadores.
+    - **Repertório sociocultural:** citação de informações, fatos, opiniões, dados estatísticos, exemplos, fatos históricos, citações, alusões históricas, comparações entre fatos, situações, épocas ou lugares distintos, que enriquecem a argumentação e demonstram domínio de conhecimentos de áreas específicas, além do conhecimento geral.
+    - **Fuga total ao tema:** desvio completo do tema, sem mencionar o tema específico ou o assunto mais amplo.
+    - **Tangenciamento ao tema:** abordagem parcial do tema,  tratando apenas do assunto mais amplo.
+    - **Não atendimento ao tipo textual:** predominância de características de outro tipo textual, como o narrativo ou o descritivo.
+
+    **Competência III: Selecionar, relacionar, organizar e interpretar informações, fatos, opiniões e argumentos em defesa de um ponto de vista:**
+
+    - **Organização textual:** estruturação lógica e coerente do texto, com parágrafos bem delimitados e com progressão temática, revelando que a redação foi planejada e que as ideias desenvolvidas são apresentadas de forma organizada.
+    - **Seleção de argumentos:** escolha de informações, fatos, opiniões e argumentos pertinentes ao tema e ao ponto de vista defendido.
+    - **Articulação de ideias:** desenvolvimento dos argumentos com clareza e coesão, com frases e parágrafos que se interligam de forma lógica, evitando repetições, informações irrelevantes ou excesso de informações.
+    - **Defesa do ponto de vista:** apresentação clara e consistente do ponto de vista, com argumentos e informações que o justifiquem e o tornem convincente para o leitor.
+
+    **Competência IV: Demonstrar conhecimento dos mecanismos linguísticos necessários para a construção da argumentação:**
+
+    - **Coesão textual:** uso de recursos coesivos para garantir a articulação entre frases, períodos e parágrafos, como pronomes, advérbios, artigos, sinônimos, antônimos,  hipônimos, hiperônimos,  conjunções, preposições, expressões referenciais,  etc.
+    - **Domínio dos recursos coesivos:** emprego adequado dos operadores argumentativos para estabelecer as relações semânticas desejadas entre as partes do texto, demonstrando conhecimento das diferentes funções dos conectivos.
+    - **Referênciação:** retomada de elementos do texto de forma clara e precisa, evitando ambiguidades e repetições.
+    - **Estruturação dos parágrafos:** construção de parágrafos com uma ideia principal bem definida, desenvolvida por ideias secundárias e articulada com os demais parágrafos.
+    - **Estruturação dos períodos:** uso de períodos complexos e variados, com orações que se interligam de forma lógica e coesa, evitando períodos truncados ou justapostos.
+
+    **Competência V: Elaborar proposta de intervenção para o problema abordado, respeitando os direitos humanos:**
+
+    - **Compreensão do problema:** identificação do problema apresentado no tema, com clareza e precisão.
+    - **Proposta de intervenção:** sugestão de uma ação/solução para o problema abordado, com detalhamento dos elementos da intervenção:
+    - *Agente:* Quem atuará para a resolução do problema? Alguns agentes são considerados nulos, como “a população”, “a sociedade”, “o homem”, etc.
+    - *Ação:* O que será feito para que o problema seja resolvido? Algumas ações são considerados nulas, como “as pessoas devem se conscientizar”.
+    - *Modo/meio:* Como isso será feito? O modo/meio deve aparecer de forma evidente e clara no texto. É recomendável o uso de marcadores como “por meio de”.
+    - *Efeito/finalidade:* Qual é o objetivo a ser alcançado com a proposta? O efeito/finalidade deve aparecer de forma evidente e clara no texto.É recomendável o uso de marcadores como “a fim de”, “com a finalidade” etc.
+    - *Detalhamento:* o acréscimo de informações sobre um dos elementos acima, tornando-o mais completo. Caso o candidato opte, por exemplo, por detalhar o agente, basta dizer qual é o papel desse agente para que seu leitor compreenda-o melhor no processo de execução.
+    - **Viabilidade da proposta:**  realismo e praticabilidade da proposta de intervenção, com detalhamento do  modo de execução e das etapas necessárias para sua realização.
+    - **Respeito aos direitos humanos:**  apresentação de uma proposta que respeite os direitos humanos,  evitando ideias ou ações que violem a dignidade da pessoa humana,  que promovam a violência ou o discurso de ódio.
+    - **Direitos Humanos:**  mencionar  os direitos humanos relacionados ao tema, demonstrando conhecimento dos princípios norteadores dos direitos humanos.
+
+# ---
+variables:
+  tema_redacao:
+    sample: A persistência da violência contra a mulher na sociedade brasileira
+  enunciado_redacao:
+    sample: A partir da leitura dos textos motivadores, e com base nos conhecimentos construídos ao longo de sua formação, redija um texto dissertativo-argumentativo em modalidade escrita formal da língua portuguesa sobre o tema “A persistência da violência contra a mulher na sociedade brasileira” apresentando proposta de intervenção que respeite os direitos humanos. Selecione, organize e relacione, de forma coerente e coesa, argumentos e fatos para a defesa do seu ponto de vista.
+  textos_motivadores:
+    sample: Nos 30 anos decorridos entre 1980 e 2010 foram assassinadas no país acima de 92 mil mulheres, 43,7 mil só na última década. O número de mortes nesse período passou de 1353 para 4465, que representa um aumento de 230% mais que triplicando o quantitativo de mulheres vítimas de assassinato no país. - https://drive.google.com/file/d/18eLviMON833Ny8k9W2Iz4xTVQtDm91n_/view?usp=sharing - https://drive.google.com/file/d/1U2nm8F0U77wgSLFJTQ-rA3x8rxZr40Gm/view?usp=sharing - https://drive.google.com/file/d/1SSbpIXEM_kMygNaEvpl2bDVQ8pOmKqIQ/view?usp=sharing
+  redacao_estudante:
+    sample: O erroneamente dito sexo frágil é explorado desde as primeiras formas de organização humanas, comprovadamente pelos comportamentos controladores dos homens das cavernas que arrastavam as fêmeas como objetos. Tal problema se concretizou, há muito, pela dominação dos homens sobre as mulheres, perpetuando-se através do pensamento de que elas são incapazes e dependentes, implantando a ideia de que eles têm poderes sobre as mulheres, como no machismo enraizado na sociedade brasileira. Poderes esses, ilegítimos por abusarem dos direitos femininos.\n Essa violência é uma violação dos direitos básicos dessa minoria, o que gera mais problemas sociais tais quais a desigualdade, já que uma das formas de violência contra a mulher está no cerceamento de seu acesso à educação, onde, atualmente, cerca de 1,7 milhão de brasileiras não terminaram o ensino médio e não trabalham, como apontam os dados da Pesquisa Nacional por Amostra de Domicílios Contínua, do Instituto Unibanco.\n Para o combate ao machismo que aprisiona mulheres no nosso país, se faz necessária a presença dessa pauta nos meios de comunicação e nas produções culturais, pois é na educação que reside o verdadeiro poder, como acreditava o sociólogo Michael Foucault. Para além, assistência à essas mulheres, feito a fiscalização da situação escolar das jovens por parte dos órgãos competentes é indispensável.
+# ---
+user:
+  - text: |
+      Tema da redação: {{ tema_redacao }}
+      
+      Enunciado da redação: {{ enunciado_redacao }}
+      
+      Estes são os textos motivadores:
+      {{ textos_motivadores }}
+
+      Avalie a seguinte redação:
+      {{ redacao_estudante }}

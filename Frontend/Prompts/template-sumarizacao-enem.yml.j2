@@ -1,0 +1,64 @@
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# ---
+name: Essay Sumarizer
+description: Um prompt para sumarização da correção do ENEM de uma redação.
+model:
+  model_name: gemini-1.5-pro-002
+  generation_config:
+    temperature: 0
+  system_instruction: |
+    Você é um professor e está explicando para um aluno do ensino médio a correção que foi realizada sobre a redação que ele enviou.
+    
+    - Resuma a correção da redação do ENEM abaixo para um texto de 5 a 15 linhas, dependendo da complexidade da correção da redação do aluno. 
+    - Utilize trechos da redação do aluno sem nenhuma alteração, colocando exclusivamente trechos da redação do aluno do mesmo modo que estão escritos na redação entre as tags <trechoRedacaoAluno></trechoRedacaoAluno>. 
+    - Mantenha o foco nos pontos principais da correção, buscando a melhor representatividade do texto original e da avaliação feita.
+    - Sugira ao aluno pontos de melhoria com base no feedback recebido
+    - Mantenha o texto final de uma forma didática
+    - Foque nos erros que foram mais impactantes na redação do aluno
+    - Para referências a correção da redação utilize a tag <correcaoCompleta> </correcaoCompleta>
+    - Mantenha o feedback na seguinte ordem (podendo pular alguma se não houver comentários sobre): Domínio da língua portuguesa , Compreensão da proposta, Organização e defesa, Conhecimentos linguísticos e argumentação, Proposta de intervenção
+    - Não diga que a redação foi corrigida por uma IA ou pelo Gemini
+
+# ---
+variables:
+  tema_redacao:
+    sample: A persistência da violência contra a mulher na sociedade brasileira
+  enunciado_redacao:
+    sample: A partir da leitura dos textos motivadores, e com base nos conhecimentos construídos ao longo de sua formação, redija um texto dissertativo-argumentativo em modalidade escrita formal da língua portuguesa sobre o tema “A persistência da violência contra a mulher na sociedade brasileira” apresentando proposta de intervenção que respeite os direitos humanos. Selecione, organize e relacione, de forma coerente e coesa, argumentos e fatos para a defesa do seu ponto de vista.
+  textos_motivadores:
+    sample: Nos 30 anos decorridos entre 1980 e 2010 foram assassinadas no país acima de 92 mil mulheres, 43,7 mil só na última década. O número de mortes nesse período passou de 1353 para 4465, que representa um aumento de 230% mais que triplicando o quantitativo de mulheres vítimas de assassinato no país. - https://drive.google.com/file/d/18eLviMON833Ny8k9W2Iz4xTVQtDm91n_/view?usp=sharing - https://drive.google.com/file/d/1U2nm8F0U77wgSLFJTQ-rA3x8rxZr40Gm/view?usp=sharing - https://drive.google.com/file/d/1SSbpIXEM_kMygNaEvpl2bDVQ8pOmKqIQ/view?usp=sharing
+  redacao_estudante:
+    sample: O erroneamente dito sexo frágil é explorado desde as primeiras formas de organização humanas, comprovadamente pelos comportamentos controladores dos homens das cavernas que arrastavam as fêmeas como objetos. Tal problema se concretizou, há muito, pela dominação dos homens sobre as mulheres, perpetuando-se através do pensamento de que elas são incapazes e dependentes, implantando a ideia de que eles têm poderes sobre as mulheres, como no machismo enraizado na sociedade brasileira. Poderes esses, ilegítimos por abusarem dos direitos femininos.\n Essa violência é uma violação dos direitos básicos dessa minoria, o que gera mais problemas sociais tais quais a desigualdade, já que uma das formas de violência contra a mulher está no cerceamento de seu acesso à educação, onde, atualmente, cerca de 1,7 milhão de brasileiras não terminaram o ensino médio e não trabalham, como apontam os dados da Pesquisa Nacional por Amostra de Domicílios Contínua, do Instituto Unibanco.\n Para o combate ao machismo que aprisiona mulheres no nosso país, se faz necessária a presença dessa pauta nos meios de comunicação e nas produções culturais, pois é na educação que reside o verdadeiro poder, como acreditava o sociólogo Michael Foucault. Para além, assistência à essas mulheres, feito a fiscalização da situação escolar das jovens por parte dos órgãos competentes é indispensável.
+  correcao_redacao:
+    sample: "Nota Total: ENEM: 560/1000 O que a IA levou em conta para trazer esse feedback? Competencia 2 ENEM: 120/200 - Compreensao proposta: O texto demonstra compreensao da proposta, abordando o tema da persistencia da violencia contra a mulher na sociedade brasileira. A redacao discute as raizes historicas e culturais do problema, mencionando o machismo como ideologia familiar e apresentando dados estatisticos.- Dominio conteudos: O texto apresenta informacoes relevantes sobre o tema, como dados estatisticos sobre feminicidio e violencia psicologica. No entanto, a citacao de Voltaire e imprecisa e nao contribui para a argumentacao.- Fuga tema: Nao ha fuga total ao tema.- Nao atendimento tipo textual: A redacao atende ao tipo textual dissertativo-argumentativo, apresentando uma tese e argumentos para sustenta-la.- Repertorio sociocultural: A tentativa de usar Voltaire como repertorio sociocultural e inadequada, pois a citacao e imprecisa e nao se relaciona diretamente com o tema. O uso de dados da Secretaria de Politicas para as Mulheres e pertinente.- Tangenciamento tema: Nao ha tangenciamento ao tema. Competencia 3 ENEM: 160/200 - Articulacao ideias: A articulacao de ideias e prejudicada pela citacao inadequada de Voltaire e pela falta de clareza na relacao entre machismo e feminicidio. A argumentacao seria mais forte se explorasse as causas e consequencias da violencia contra a mulher de forma mais aprofundada.- Defesa ponto vista: O ponto de vista e defendido, mas a argumentacao poderia ser mais consistente com exemplos e dados que comprovassem a relacao entre machismo e violencia.- Organizacao textual: O texto apresenta uma organizacao basica, com introducao, desenvolvimento e conclusao. No entanto, a progressao tematica poderia ser mais fluida.- Selecao argumentos: Os argumentos selecionados sao pertinentes, mas poderiam ser mais desenvolvidos e aprofundados. Competencia 4 ENEM: 120/200 - Coesao textual: O texto apresenta alguns problemas de coesao, como o uso inadequado do conectivo portanto e a falta de clareza na relacao entre algumas frases.- Dominio recursos coesivos: O uso de conectivos e limitado e poderia ser mais diversificado para melhorar a coesao textual.- Estrutura paragrafo: Os paragrafos poderiam ser melhor estruturados, com topicos frasais mais claros e desenvolvimento mais aprofundado das ideias.- Estrutura periodos: A estrutura dos periodos e simples e poderia ser mais variada.- Referenciacao: A referenciaçao e adequada, sem ambiguidades. Competencia 5 ENEM: 160/200 - Compreensao problema: O problema da violencia contra a mulher e compreendido e apresentado na introducao.- Proposta intervencao: A proposta de intervencao apresenta os elementos necessarios, como agente, acao, modo/meio e efeito/finalidade. No entanto, falta detalhamento e aprofundamento das acoes propostas.- Viabilidade proposta: A viabilidade da proposta e questionavel, pois as acoes sao genericas e superficiais."
+# ---
+user:
+  - text: |
+      Tema da redação: {{ tema_redacao }}
+      
+      Enunciado da redação: {{ enunciado_redacao }}
+      
+      Estes são os textos motivadores:
+      {{ textos_motivadores }}
+
+      Esta foi a redação do estudante:
+      {{ redacao_estudante }}
+
+      Esta foi a correção realizada:
+      {{ correcao_redacao }}
+
+
+      

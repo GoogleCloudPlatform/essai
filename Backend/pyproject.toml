@@ -1,0 +1,19 @@
+[project]
+name = "api"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "cloud-sql-python-connector[pg8000]>=1.12.1",
+    "fastapi[standard]>=0.115.0",
+    "google-cloud-pubsub>=2.25.2",
+    "psycopg2-binary>=2.9.9",
+    "pydantic-settings>=2.5.2",
+    "sqlmodel>=0.0.22",
+]
+
+[tool.uv]
+dev-dependencies = [
+    "ruff>=0.6.7",
+]

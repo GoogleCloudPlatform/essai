@@ -1,0 +1,383 @@
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# ---
+name: Essay Correction
+description: Um prompt para a correo de redaes seguindos as rbricas do ENEM.
+model:
+  model_name: gemini-1.5-pro-002
+  generation_config:
+    temperature: 0.3
+    response_mime_type: application/json
+    response_schema:
+      type: object
+      properties:
+        competencia_1:
+          type: object
+          properties:
+            notas:
+              type: object
+              properties:
+                dominio_escrita_formal:
+                  type: integer
+                  description: Domnio da norma culta da Lngua Portuguesa (Notas de 0 a 10)
+                adequacao_escrita_formal:
+                  type: integer
+                  description: Adequao  modalidade escrita formal (Notas de 0 a 10)
+                escolhas_lexicais:
+                  type: integer
+                  description: Escolhas lexicais adequadas (Notas de 0 a 10)
+                estrutura_sintatica:
+                  type: integer
+                  description: Estrutura sinttica (Notas de 0 a 10)
+              required:
+                - dominio_escrita_formal
+                - adequacao_escrita_formal
+                - escolhas_lexicais
+                - estrutura_sintatica
+            descricoes:
+              type: object
+              properties:
+                dominio_escrita_formal:
+                  type: string
+                  description: Descrio com exemplos do texto do motivo da nota atribuida
+                    no domnio da norma culta da Lngua Portuguesa
+                adequacao_escrita_formal:
+                  type: string
+                  description: Descrio com exemplos do texto do motivo da nota atribuida
+                    na adequao  modalidade escrita formal
+                escolhas_lexicais:
+                  type: string
+                  description: Descrio com exemplos do texto do motivo da nota atribuida
+                    nas escolhas lexicais adequadas
+                estrutura_sintatica:
+                  type: string
+                  description: Descrio com exemplos do texto do motivo da nota atribuida
+                    na estrutura sinttica
+              required:
+                - dominio_escrita_formal
+                - adequacao_escrita_formal
+                - escolhas_lexicais
+                - estrutura_sintatica
+        competencia_2:
+          type: object
+          properties:
+            notas:
+              type: object
+              properties:
+                compreensao_proposta:
+                  type: integer
+                  description: Compreenso da proposta de redao (Notas de 0 a 10)
+                dominio_conteudos:
+                  type: integer
+                  description: Domnio dos contedos (Notas de 0 a 10)
+                repertorio_sociocultural:
+                  type: integer
+                  description: Repertrio sociocultural (Notas de 0 a 10)
+              required:
+                - compreensao_proposta
+                - dominio_conteudos
+                - repertorio_sociocultural
+            flags:
+              type: object
+              properties:
+                fuga_tema:
+                  type: boolean
+                  description: Fuga total ao tema
+                tangenciamento_tema:
+                  type: boolean
+                  description: Tangenciamento ao tema
+                nao_atendimento_tipo_textual:
+                  type: boolean
+                  description: No atendimento ao tipo textual
+              required:
+                - fuga_tema
+                - tangenciamento_tema
+                - nao_atendimento_tipo_textual
+            descricoes:
+              type: object
+              properties:
+                desc_compreensao_proposta:
+                  type: string
+                  description: Descrio com exemplos do texto do motivo da nota atribuida
+                    na avaliao da compreensao_proposta
+                desc_dominio_conteudos:
+                  type: string
+                  description: Descrio com exemplos do texto do motivo da nota atribuida
+                    na avaliao do dominio_conteudos
+                desc_repertorio_sociocultural:
+                  type: string
+                  description: Descrio com exemplos do texto do motivo da nota atribuida
+                    na avaliao do repertorio_sociocultural
+                desc_fuga_tema:
+                  type: string
+                  description: Descrio com exemplos do texto do motivo da nota atribuida
+                    na avaliao da fuga_tema
+                desc_tangenciamento_tema:
+                  type: string
+                  description: Descrio com exemplos do texto do motivo da nota atribuida
+                    na avaliao do tangenciamento_tema
+                desc_nao_atendimento_tipo_textual:
+                  type: string
+                  description: Descrio com exemplos do texto do motivo da nota atribuida
+                    na avaliao do nao_atendimento_tipo_textual
+              required:
+                - desc_compreensao_proposta
+                - desc_dominio_conteudos
+                - desc_repertorio_sociocultural
+                - desc_fuga_tema
+                - desc_tangenciamento_tema
+                - desc_nao_atendimento_tipo_textual
+          required:
+            - notas
+            - descricoes
+            - flags
+        competencia_3:
+          type: object
+          properties:
+            notas:
+              type: object
+              properties:
+                organizacao_textual:
+                  type: integer
+                  description: Organizao textual (Notas de 0 a 10)
+                selecao_argumentos:
+                  type: integer
+                  description: Seleo de argumentos (Notas de 0 a 10)
+                articulacao_ideias:
+                  type: integer
+                  description: Articulao de ideias (Notas de 0 a 10)
+                defesa_ponto_vista:
+                  type: integer
+                  description: Defesa do ponto de vista (Notas de 0 a 10)
+              required:
+                - organizacao_textual
+                - selecao_argumentos
+                - articulacao_ideias
+                - defesa_ponto_vista
+            descricoes:
+              type: object
+              properties:
+                organizacao_textual:
+                  type: string
+                  description: Descrio com exemplos do texto do motivo da nota atribuida
+                    na Organizao textual
+                selecao_argumentos:
+                  type: string
+                  description: Descrio com exemplos do texto do motivo da nota atribuida
+                    na Seleo de argumentos
+                articulacao_ideias:
+                  type: string
+                  description: Descrio com exemplos do texto do motivo da nota atribuida
+                    na Articulao de ideias
+                defesa_ponto_vista:
+                  type: string
+                  description: Descrio com exemplos do texto do motivo da nota atribuida
+                    na Defesa do ponto de vista
+              required:
+                - organizacao_textual
+                - selecao_argumentos
+                - articulacao_ideias
+                - defesa_ponto_vista
+          required:
+            - notas
+            - descricoes
+        competencia_4:
+          type: object
+          properties:
+            notas:
+              type: object
+              properties:
+                coesao_textual:
+                  type: integer
+                  description: Coeso textual (Notas de 0 a 10)
+                dominio_recursos_coesivos:
+                  type: integer
+                  description: Domnio dos recursos coesivos (Notas de 0 a 10)
+                referenciacao:
+                  type: integer
+                  description: Refernciao (Notas de 0 a 10)
+                estrutura_paragrafo:
+                  type: integer
+                  description: Estruturao dos pargrafos (Notas de 0 a 10)
+                estrutura_periodos:
+                  type: integer
+                  description: Estruturao dos perodos (Notas de 0 a 10)
+              required:
+                - coesao_textual
+                - dominio_recursos_coesivos
+                - referenciacao
+                - estrutura_paragrafo
+                - estrutura_periodos
+            descricoes:
+              type: object
+              properties:
+                coesao_textual:
+                  type: string
+                  description: Descrio com exemplos do texto do motivo da nota atribuida
+                    na Coeso textual
+                dominio_recursos_coesivos:
+                  type: string
+                  description: Descrio com exemplos do texto do motivo da nota atribuida
+                    na Domnio dos recursos coesivos
+                referenciacao:
+                  type: string
+                  description: Descrio com exemplos do texto do motivo da nota atribuida
+                    na Refernciao
+                estrutura_paragrafo:
+                  type: string
+                  description: Descrio com exemplos do texto do motivo da nota atribuida
+                    na Estruturao dos pargrafos
+                estrutura_periodos:
+                  type: string
+                  description: Descrio com exemplos do texto do motivo da nota atribuida
+                    na Estruturao dos perodos
+              required:
+                - coesao_textual
+                - dominio_recursos_coesivos
+                - referenciacao
+                - estrutura_paragrafo
+                - estrutura_periodos
+          required:
+            - notas
+            - descricoes
+        competencia_5:
+          type: object
+          properties:
+            notas:
+              type: object
+              properties:
+                compreensao_problema:
+                  type: integer
+                  description: Compreenso do problema (Notas de 0 a 10)
+                proposta_intervencao:
+                  type: integer
+                  description: Proposta de interveno (Notas de 0 a 10)
+                viabilidade_proposta:
+                  type: integer
+                  description: Viabilidade da proposta (Notas de 0 a 10)
+              required:
+                - compreensao_problema
+                - proposta_intervencao
+                - viabilidade_proposta
+            flags:
+              type: object
+              properties:
+                respeito_direitos_humanos:
+                  type: boolean
+                  description: Respeito aos direitos humanos
+              required:
+                - respeito_direitos_humanos
+            descricoes:
+              type: object
+              properties:
+                compreensao_problema:
+                  type: string
+                  description: 'Descrio com exemplos do texto do motivo da nota atribuida
+                    na Compreenso do problema '
+                proposta_intervencao:
+                  type: string
+                  description: Descrio com exemplos do texto do motivo da nota atribuida
+                    na Proposta de interveno
+                viabilidade_proposta:
+                  type: string
+                  description: Descrio com exemplos do texto do motivo da nota atribuida
+                    na Viabilidade da proposta
+              required:
+                - compreensao_problema
+                - proposta_intervencao
+                - viabilidade_proposta
+          required:
+            - notas
+            - flags
+            - descricoes
+      required:
+        - competencia_1
+        - competencia_2
+        - competencia_3
+        - competencia_4
+        - competencia_5
+  system_instruction: |
+   Voc  um professor que est analisando uma redao do ENEM, um exame para o final do Ensino Mdio no Brasil.  
+   Avalie a redao com base nos critrios abaixo, atribuindo uma nota de 0 a 10 pontos para cada competncia, seguindo as diretrizes de correo do ENEM. 
+
+    Voc est utilizando os seguintes parmetros com uma nota de 0 a 10 para cada:
+
+    **Competncia I: Demonstrar domnio da modalidade escrita formal da lngua portuguesa:**
+
+    - **Domnio da norma culta da Lngua Portuguesa:** ortografia, acentuao grfica, emprego do hfen, uso de maisculas e minsculas,  separao silbica (translineao), regncia verbal e nominal, concordncia verbal e nominal, tempos e modos verbais, pontuao, paralelismo sinttico, emprego de pronomes e crase, etc, ignore termos inadequados quando os mesmos estiverem presentes no tema ou nos textos motivadores.
+    - **Adequao  modalidade escrita formal:** Certifique-se de que o texto esteja na modalidade formal, sem marcas de oralidade ou registro informal.
+    - **Escolhas lexicais adequadas:** uso de vocabulrio preciso, que significa que as palavras selecionadas so usadas em seu sentido correto e so apropriadas ao contexto em que aparecem, ignore termos inadequados quando os mesmos estiverem presentes no tema ou nos textos motivadores.
+    - **Estrutura sinttica:** presena de perodos bem estruturados e completos, com frases claras e coesas, evitando perodos truncados, justaposio de palavras, ausncia de termos ou excesso de palavras.
+
+    **Competncia II: Compreender a proposta de redao e aplicar conceitos das vrias reas de conhecimento para desenvolver o tema, dentro dos limites estruturais do texto dissertativo-argumentativo em prosa:**
+
+    - **Compreenso da proposta de redao:** identificao do tema, do tipo de texto solicitado e do ponto de vista a ser defendido.
+    - **Domnio dos contedos:** demonstrao de conhecimento sobre o tema, utilizando conceitos de diferentes reas do conhecimento, sem se restringir aos textos motivadores.
+    - **Repertrio sociocultural:** citao de informaes, fatos, opinies, dados estatsticos, exemplos, fatos histricos, citaes, aluses histricas, comparaes entre fatos, situaes, pocas ou lugares distintos, que enriquecem a argumentao e demonstram domnio de conhecimentos de reas especficas, alm do conhecimento geral.
+    - **Fuga total ao tema:** desvio completo do tema, sem mencionar o tema especfico ou o assunto mais amplo.
+    - **Tangenciamento ao tema:** abordagem parcial do tema,  tratando apenas do assunto mais amplo.
+    - **No atendimento ao tipo textual:** predominncia de caractersticas de outro tipo textual, como o narrativo ou o descritivo.
+
+    **Competncia III: Selecionar, relacionar, organizar e interpretar informaes, fatos, opinies e argumentos em defesa de um ponto de vista:**
+
+    - **Organizao textual:** estruturao lgica e coerente do texto, com pargrafos bem delimitados e com progresso temtica, revelando que a redao foi planejada e que as ideias desenvolvidas so apresentadas de forma organizada.
+    - **Seleo de argumentos:** escolha de informaes, fatos, opinies e argumentos pertinentes ao tema e ao ponto de vista defendido.
+    - **Articulao de ideias:** desenvolvimento dos argumentos com clareza e coeso, com frases e pargrafos que se interligam de forma lgica, evitando repeties, informaes irrelevantes ou excesso de informaes.
+    - **Defesa do ponto de vista:** apresentao clara e consistente do ponto de vista, com argumentos e informaes que o justifiquem e o tornem convincente para o leitor.
+
+    **Competncia IV: Demonstrar conhecimento dos mecanismos lingusticos necessrios para a construo da argumentao:**
+
+    - **Coeso textual:** uso de recursos coesivos para garantir a articulao entre frases, perodos e pargrafos, como pronomes, advrbios, artigos, sinnimos, antnimos,  hipnimos, hipernimos,  conjunes, preposies, expresses referenciais,  etc.
+    - **Domnio dos recursos coesivos:** emprego adequado dos operadores argumentativos para estabelecer as relaes semnticas desejadas entre as partes do texto, demonstrando conhecimento das diferentes funes dos conectivos.
+    - **Refernciao:** retomada de elementos do texto de forma clara e precisa, evitando ambiguidades e repeties.
+    - **Estruturao dos pargrafos:** construo de pargrafos com uma ideia principal bem definida, desenvolvida por ideias secundrias e articulada com os demais pargrafos.
+    - **Estruturao dos perodos:** uso de perodos complexos e variados, com oraes que se interligam de forma lgica e coesa, evitando perodos truncados ou justapostos.
+
+    **Competncia V: Elaborar proposta de interveno para o problema abordado, respeitando os direitos humanos:**
+
+    - **Compreenso do problema:** identificao do problema apresentado no tema, com clareza e preciso.
+    - **Proposta de interveno:** sugesto de uma ao/soluo para o problema abordado, com detalhamento dos elementos da interveno:
+    - *Agente:* Quem atuar para a resoluo do problema? Alguns agentes so considerados nulos, como a populao, a sociedade, o homem, etc.
+    - *Ao:* O que ser feito para que o problema seja resolvido? Algumas aes so considerados nulas, como as pessoas devem se conscientizar.
+    - *Modo/meio:* Como isso ser feito? O modo/meio deve aparecer de forma evidente e clara no texto.  recomendvel o uso de marcadores como por meio de.
+    - *Efeito/finalidade:* Qual  o objetivo a ser alcanado com a proposta? O efeito/finalidade deve aparecer de forma evidente e clara no texto. recomendvel o uso de marcadores como a fim de, com a finalidade etc.
+    - *Detalhamento:* o acrscimo de informaes sobre um dos elementos acima, tornando-o mais completo. Caso o candidato opte, por exemplo, por detalhar o agente, basta dizer qual  o papel desse agente para que seu leitor compreenda-o melhor no processo de execuo.
+    - **Viabilidade da proposta:**  realismo e praticabilidade da proposta de interveno, com detalhamento do  modo de execuo e das etapas necessrias para sua realizao.
+    - **Respeito aos direitos humanos:**  apresentao de uma proposta que respeite os direitos humanos,  evitando ideias ou aes que violem a dignidade da pessoa humana,  que promovam a violncia ou o discurso de dio.
+    - **Direitos Humanos:**  mencionar  os direitos humanos relacionados ao tema, demonstrando conhecimento dos princpios norteadores dos direitos humanos.
+
+# ---
+variables:
+  tema_redacao:
+    sample: A persistncia da violncia contra a mulher na sociedade brasileira
+  enunciado_redacao:
+    sample: A partir da leitura dos textos motivadores, e com base nos conhecimentos construdos ao longo de sua formao, redija um texto dissertativo-argumentativo em modalidade escrita formal da lngua portuguesa sobre o tema A persistncia da violncia contra a mulher na sociedade brasileira apresentando proposta de interveno que respeite os direitos humanos. Selecione, organize e relacione, de forma coerente e coesa, argumentos e fatos para a defesa do seu ponto de vista.
+  textos_motivadores:
+    sample: Nos 30 anos decorridos entre 1980 e 2010 foram assassinadas no pas acima de 92 mil mulheres, 43,7 mil s na ltima dcada. O nmero de mortes nesse perodo passou de 1353 para 4465, que representa um aumento de 230% mais que triplicando o quantitativo de mulheres vtimas de assassinato no pas. - https://drive.google.com/file/d/18eLviMON833Ny8k9W2Iz4xTVQtDm91n_/view?usp=sharing - https://drive.google.com/file/d/1U2nm8F0U77wgSLFJTQ-rA3x8rxZr40Gm/view?usp=sharing - https://drive.google.com/file/d/1SSbpIXEM_kMygNaEvpl2bDVQ8pOmKqIQ/view?usp=sharing
+  redacao_estudante:
+    sample: O erroneamente dito sexo frgil  explorado desde as primeiras formas de organizao humanas, comprovadamente pelos comportamentos controladores dos homens das cavernas que arrastavam as fmeas como objetos. Tal problema se concretizou, h muito, pela dominao dos homens sobre as mulheres, perpetuando-se atravs do pensamento de que elas so incapazes e dependentes, implantando a ideia de que eles tm poderes sobre as mulheres, como no machismo enraizado na sociedade brasileira. Poderes esses, ilegtimos por abusarem dos direitos femininos.\n Essa violncia  uma violao dos direitos bsicos dessa minoria, o que gera mais problemas sociais tais quais a desigualdade, j que uma das formas de violncia contra a mulher est no cerceamento de seu acesso  educao, onde, atualmente, cerca de 1,7 milho de brasileiras no terminaram o ensino mdio e no trabalham, como apontam os dados da Pesquisa Nacional por Amostra de Domiclios Contnua, do Instituto Unibanco.\n Para o combate ao machismo que aprisiona mulheres no nosso pas, se faz necessria a presena dessa pauta nos meios de comunicao e nas produes culturais, pois  na educao que reside o verdadeiro poder, como acreditava o socilogo Michael Foucault. Para alm, assistncia  essas mulheres, feito a fiscalizao da situao escolar das jovens por parte dos rgos competentes  indispensvel.
+# --- 
+user:
+  - multimodal: |
+      Tema da redao: {{ tema_redacao }}
+      
+      Enunciado da redao: {{ enunciado_redacao }}
+      
+      Estes so os textos motivadores:
+  
+      {{ textos_motivadores }}
+
+      Avalie a seguinte redao:
+      {{ redacao_estudante }}
