@@ -30,7 +30,7 @@ The general automation flow is described below:
 
 * Once an essay is sent for correction it is automatically picked up by the Correction API (also known as correction producer) and queued up in [PubSub](https://cloud.google.com/pubsub?hl=en)).
 
-* A consumer function (known as Consumer EssAI) dequeues the message from the queue and send it for correction with Gemini. Results are also consolidated in the database ([Cloud SQL for Postgres](https://cloud.google.com/sql). 
+* A consumer function (known as Consumer EssAI) dequeues the message from the queue and send it for correction with Gemini. Results are also consolidated in the database ([Cloud SQL for Postgres](https://cloud.google.com/sql)). 
 
 * Once ready (corrected), the "Correction API (return)" picks up the correction in the database, formats its return and then send it back to be visualized by users in the frontend. 
 
