@@ -28,7 +28,7 @@ The general automation flow is described below:
 
 * Essay is produced by the student and is then sent for evaluation through the web interface (it can be in or out GCP - this demo relies on [Streamlit](https://streamlit.io/)). In the case of this demo, those essays are pre-populated, in pt-BR and are fake generated texts.
 
-* Once an essay is sent for correction it is automatically picked up by the Correction API (also known as correction producer) and queued up in [PubSub](https://cloud.google.com/pubsub?hl=en).
+* Once an essay is sent for correction it is automatically picked up by the Correction API (also known as correction producer) and queued up in [PubSub](https://cloud.google.com/pubsub?hl=en)).
 
 * A consumer function (known as Consumer EssAI) dequeues the message from the queue and send it for correction with Gemini. Results are also consolidated in the database ([Cloud SQL for Postgres](https://cloud.google.com/sql). 
 
