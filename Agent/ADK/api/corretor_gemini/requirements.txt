@@ -1,0 +1,12 @@
+google-cloud-aiplatform
+google-generativeai
+matplotlib
+scikit-learn
+tqdm
+seaborn
+pandas
+numpy
+ipykernel
+promptweaver==0.1.13
+streamlit
+python-dotenv

@@ -1,0 +1,368 @@
+{
+    "type": "object",
+    "properties": {
+      "competencia_1": {
+        "type": "object",
+        "properties": {
+          "notas": {
+            "type": "object",
+            "properties": {
+              "dominio_escrita_formal": {
+                "type": "integer",
+                "description": "Domínio da norma culta da Língua Portuguesa (Notas de 0 a 10)"
+              },
+              "adequacao_escrita_formal": {
+                "type": "integer",
+                "description": "Adequação à modalidade escrita formal (Notas de 0 a 10)"
+              },
+              "escolhas_lexicais": {
+                "type": "integer",
+                "description": "Escolhas lexicais adequadas (Notas de 0 a 10)"
+              },
+              "estrutura_sintatica": {
+                "type": "integer",
+                "description": "Estrutura sintática (Notas de 0 a 10)"
+              }
+            },
+            "required": [
+              "dominio_escrita_formal",
+              "adequacao_escrita_formal",
+              "escolhas_lexicais",
+              "estrutura_sintatica"
+            ]
+          },
+          "descricoes": {
+            "type": "object",
+            "properties": {
+              "dominio_escrita_formal": {
+                "type": "string",
+                "description": "Descrição com exemplos do texto do motivo da nota atribuida\n                    no domínio da norma culta da Língua Portuguesa"
+              },
+              "adequacao_escrita_formal": {
+                "type": "string",
+                "description": "Descrição com exemplos do texto do motivo da nota atribuida\n                    na adequação à modalidade escrita formal"
+              },
+              "escolhas_lexicais": {
+                "type": "string",
+                "description": "Descrição com exemplos do texto do motivo da nota atribuida\n                    nas escolhas lexicais adequadas"
+              },
+              "estrutura_sintatica": {
+                "type": "string",
+                "description": "Descrição com exemplos do texto do motivo da nota atribuida\n                    na estrutura sintática"
+              }
+            },
+            "required": [
+              "dominio_escrita_formal",
+              "adequacao_escrita_formal",
+              "escolhas_lexicais",
+              "estrutura_sintatica"
+            ]
+          }
+        },
+        "required": [
+          "notas",
+          "descricoes"
+        ]
+      },
+      "competencia_2": {
+        "type": "object",
+        "properties": {
+          "notas": {
+            "type": "object",
+            "properties": {
+              "compreensao_proposta": {
+                "type": "integer",
+                "description": "Compreensão da proposta de redação (Notas de 0 a 10)"
+              },
+              "dominio_conteudos": {
+                "type": "integer",
+                "description": "Domínio dos conteúdos (Notas de 0 a 10)"
+              },
+              "repertorio_sociocultural": {
+                "type": "integer",
+                "description": "Repertório sociocultural (Notas de 0 a 10)"
+              }
+            },
+            "required": [
+              "compreensao_proposta",
+              "dominio_conteudos",
+              "repertorio_sociocultural"
+            ]
+          },
+          "flags": {
+            "type": "object",
+            "properties": {
+              "fuga_tema": {
+                "type": "boolean",
+                "description": "Fuga total ao tema"
+              },
+              "tangenciamento_tema": {
+                "type": "boolean",
+                "description": "Tangenciamento ao tema"
+              },
+              "nao_atendimento_tipo_textual": {
+                "type": "boolean",
+                "description": "Não atendimento ao tipo textual"
+              }
+            },
+            "required": [
+              "fuga_tema",
+              "tangenciamento_tema",
+              "nao_atendimento_tipo_textual"
+            ]
+          },
+          "descricoes": {
+            "type": "object",
+            "properties": {
+              "desc_compreensao_proposta": {
+                "type": "string",
+                "description": "Descrição com exemplos do texto do motivo da nota atribuida\n                    na avaliação da compreensao_proposta"
+              },
+              "desc_dominio_conteudos": {
+                "type": "string",
+                "description": "Descrição com exemplos do texto do motivo da nota atribuida\n                    na avaliação do dominio_conteudos"
+              },
+              "desc_repertorio_sociocultural": {
+                "type": "string",
+                "description": "Descrição com exemplos do texto do motivo da nota atribuida\n                    na avaliação do repertorio_sociocultural"
+              },
+              "desc_fuga_tema": {
+                "type": "string",
+                "description": "Descrição com exemplos do texto do motivo da nota atribuida\n                    na avaliação da fuga_tema"
+              },
+              "desc_tangenciamento_tema": {
+                "type": "string",
+                "description": "Descrição com exemplos do texto do motivo da nota atribuida\n                    na avaliação do tangenciamento_tema"
+              },
+              "desc_nao_atendimento_tipo_textual": {
+                "type": "string",
+                "description": "Descrição com exemplos do texto do motivo da nota atribuida\n                    na avaliação do nao_atendimento_tipo_textual"
+              }
+            },
+            "required": [
+              "desc_compreensao_proposta",
+              "desc_dominio_conteudos",
+              "desc_repertorio_sociocultural",
+              "desc_fuga_tema",
+              "desc_tangenciamento_tema",
+              "desc_nao_atendimento_tipo_textual"
+            ]
+          }
+        },
+        "required": [
+          "notas",
+          "descricoes",
+          "flags"
+        ]
+      },
+      "competencia_3": {
+        "type": "object",
+        "properties": {
+          "notas": {
+            "type": "object",
+            "properties": {
+              "organizacao_textual": {
+                "type": "integer",
+                "description": "Organização textual (Notas de 0 a 10)"
+              },
+              "selecao_argumentos": {
+                "type": "integer",
+                "description": "Seleção de argumentos (Notas de 0 a 10)"
+              },
+              "articulacao_ideias": {
+                "type": "integer",
+                "description": "Articulação de ideias (Notas de 0 a 10)"
+              },
+              "defesa_ponto_vista": {
+                "type": "integer",
+                "description": "Defesa do ponto de vista (Notas de 0 a 10)"
+              }
+            },
+            "required": [
+              "organizacao_textual",
+              "selecao_argumentos",
+              "articulacao_ideias",
+              "defesa_ponto_vista"
+            ]
+          },
+          "descricoes": {
+            "type": "object",
+            "properties": {
+              "organizacao_textual": {
+                "type": "string",
+                "description": "Descrição com exemplos do texto do motivo da nota atribuida\n                    na Organização textual"
+              },
+              "selecao_argumentos": {
+                "type": "string",
+                "description": "Descrição com exemplos do texto do motivo da nota atribuida\n                    na Seleção de argumentos"
+              },
+              "articulacao_ideias": {
+                "type": "string",
+                "description": "Descrição com exemplos do texto do motivo da nota atribuida\n                    na Articulação de ideias"
+              },
+              "defesa_ponto_vista": {
+                "type": "string",
+                "description": "Descrição com exemplos do texto do motivo da nota atribuida\n                    na Defesa do ponto de vista"
+              }
+            },
+            "required": [
+              "organizacao_textual",
+              "selecao_argumentos",
+              "articulacao_ideias",
+              "defesa_ponto_vista"
+            ]
+          }
+        },
+        "required": [
+          "notas",
+          "descricoes"
+        ]
+      },
+      "competencia_4": {
+        "type": "object",
+        "properties": {
+          "notas": {
+            "type": "object",
+            "properties": {
+              "coesao_textual": {
+                "type": "integer",
+                "description": "Coesão textual (Notas de 0 a 10)"
+              },
+              "dominio_recursos_coesivos": {
+                "type": "integer",
+                "description": "Domínio dos recursos coesivos (Notas de 0 a 10)"
+              },
+              "referenciacao": {
+                "type": "integer",
+                "description": "Referênciação (Notas de 0 a 10)"
+              },
+              "estrutura_paragrafo": {
+                "type": "integer",
+                "description": "Estruturação dos parágrafos (Notas de 0 a 10)"
+              },
+              "estrutura_periodos": {
+                "type": "integer",
+                "description": "Estruturação dos períodos (Notas de 0 a 10)"
+              }
+            },
+            "required": [
+              "coesao_textual",
+              "dominio_recursos_coesivos",
+              "referenciacao",
+              "estrutura_paragrafo",
+              "estrutura_periodos"
+            ]
+          },
+          "descricoes": {
+            "type": "object",
+            "properties": {
+              "coesao_textual": {
+                "type": "string",
+                "description": "Descrição com exemplos do texto do motivo da nota atribuida\n                    na Coesão textual"
+              },
+              "dominio_recursos_coesivos": {
+                "type": "string",
+                "description": "Descrição com exemplos do texto do motivo da nota atribuida\n                    na Domínio dos recursos coesivos"
+              },
+              "referenciacao": {
+                "type": "string",
+                "description": "Descrição com exemplos do texto do motivo da nota atribuida\n                    na Referênciação"
+              },
+              "estrutura_paragrafo": {
+                "type": "string",
+                "description": "Descrição com exemplos do texto do motivo da nota atribuida\n                    na Estruturação dos parágrafos"
+              },
+              "estrutura_periodos": {
+                "type": "string",
+                "description": "Descrição com exemplos do texto do motivo da nota atribuida\n                    na Estruturação dos períodos"
+              }
+            },
+            "required": [
+              "coesao_textual",
+              "dominio_recursos_coesivos",
+              "referenciacao",
+              "estrutura_paragrafo",
+              "estrutura_periodos"
+            ]
+          }
+        },
+        "required": [
+          "notas",
+          "descricoes"
+        ]
+      },
+      "competencia_5": {
+        "type": "object",
+        "properties": {
+          "notas": {
+            "type": "object",
+            "properties": {
+              "compreensao_problema": {
+                "type": "integer",
+                "description": "Compreensão do problema (Notas de 0 a 10)"
+              },
+              "proposta_intervencao": {
+                "type": "integer",
+                "description": "Proposta de intervenção (Notas de 0 a 10)"
+              },
+              "viabilidade_proposta": {
+                "type": "integer",
+                "description": "Viabilidade da proposta (Notas de 0 a 10)"
+              }
+            },
+            "required": [
+              "compreensao_problema",
+              "proposta_intervencao",
+              "viabilidade_proposta"
+            ]
+          },
+          "flags": {
+            "type": "object",
+            "properties": {
+              "respeito_direitos_humanos": {
+                "type": "boolean",
+                "description": "Respeito aos direitos humanos"
+              }
+            },
+            "required": [
+              "respeito_direitos_humanos"
+            ]
+          },
+          "descricoes": {
+            "type": "object",
+            "properties": {
+              "compreensao_problema": {
+                "type": "string",
+                "description": "Descrição com exemplos do texto do motivo da nota atribuida\n                    na Compreensão do problema "
+              },
+              "proposta_intervencao": {
+                "type": "string",
+                "description": "Descrição com exemplos do texto do motivo da nota atribuida\n                    na Proposta de intervenção"
+              },
+              "viabilidade_proposta": {
+                "type": "string",
+                "description": "Descrição com exemplos do texto do motivo da nota atribuida\n                    na Viabilidade da proposta"
+              }
+            },
+            "required": [
+              "compreensao_problema",
+              "proposta_intervencao",
+              "viabilidade_proposta"
+            ]
+          }
+        },
+        "required": [
+          "notas",
+          "flags",
+          "descricoes"
+        ]
+      }
+    },
+    "required": [
+      "competencia_1",
+      "competencia_2",
+      "competencia_3",
+      "competencia_4",
+      "competencia_5"
+    ]
+  }

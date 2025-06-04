@@ -1,0 +1,16 @@
+google-cloud-aiplatform
+google-generativeai
+matplotlib
+scikit-learn
+tqdm
+seaborn
+pandas
+numpy
+ipykernel
+promptweaver==0.1.15
+streamlit
+python-dotenv
+pandas-gbq
+google-genai
+fastapi
+uvicorn

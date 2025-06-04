@@ -1,0 +1,81 @@
+{
+  "competencia_1": {
+    "notas": {
+      "dominio_escrita_formal": 6,
+      "adequacao_escrita_formal": 6,
+      "escolhas_lexicais": 6,
+      "estrutura_sintatica": 4
+    },
+    "descricoes": {
+      "dominio_escrita_formal": "A estudante comete alguns erros de pontua\u00e7\u00e3o, como o uso da v\u00edrgula antes de \"com festas\", \"com folia\", \"fantasias\", \"desfiles\" e \"dan\u00e7as\", que deveriam ser separados por v\u00edrgulas, mas sem a v\u00edrgula antes do primeiro termo. Al\u00e9m disso, h\u00e1 alguns erros ortogr\u00e1ficos, como \"homofobicos\" e \"machistas\" repetido. No geral, o texto demonstra um dom\u00ednio mediano da norma culta.",
+      "adequacao_escrita_formal": "A reda\u00e7\u00e3o utiliza a modalidade escrita formal de maneira adequada, sem marcas de oralidade ou informalidades. O vocabul\u00e1rio empregado \u00e9 apropriado para o contexto.",
+      "escolhas_lexicais": "As escolhas lexicais s\u00e3o adequadas ao tema e ao g\u00eanero textual, contribuindo para a clareza e a precis\u00e3o da argumenta\u00e7\u00e3o. N\u00e3o h\u00e1 imprecis\u00f5es vocabulares significativas.",
+      "estrutura_sintatica": "H\u00e1 alguns problemas de estrutura sint\u00e1tica, como a repeti\u00e7\u00e3o de \"Por exemplo exemplo\" e a frase truncada \"O \u00fanico caminho A \u00fanica solu\u00e7\u00e3o para isso \u00e9 disseminar informa\u00e7\u00e3o para as pessoas.\" Esses erros comprometem a fluidez e a clareza da argumenta\u00e7\u00e3o. Al\u00e9m disso, h\u00e1 per\u00edodos longos e complexos que poderiam ser divididos em frases mais curtas para facilitar a leitura."
+    }
+  },
+  "competencia_2": {
+    "notas": {
+      "compreensao_proposta": 8,
+      "dominio_conteudos": 8,
+      "repertorio_sociocultural": 6
+    },
+    "flags": {
+      "fuga_tema": false,
+      "tangenciamento_tema": false,
+      "nao_atendimento_tipo_textual": false
+    },
+    "descricoes": {
+      "desc_compreensao_proposta": "A estudante demonstra ter compreendido a proposta de reda\u00e7\u00e3o, abordando o tema da apropria\u00e7\u00e3o cultural no Carnaval e apresentando um ponto de vista claro sobre o assunto.",
+      "desc_dominio_conteudos": "A reda\u00e7\u00e3o apresenta informa\u00e7\u00f5es relevantes sobre o tema, como a rela\u00e7\u00e3o entre apropria\u00e7\u00e3o cultural e preconceito, e a import\u00e2ncia do respeito \u00e0 diversidade cultural. A argumenta\u00e7\u00e3o \u00e9 consistente e demonstra um bom entendimento do assunto.",
+      "desc_repertorio_sociocultural": "O repert\u00f3rio sociocultural utilizado \u00e9 pertinente ao tema, como a refer\u00eancia ao per\u00edodo hist\u00f3rico da coloniza\u00e7\u00e3o e \u00e0 luta por identidade. No entanto, poderia ser mais diversificado e aprofundado.",
+      "desc_fuga_tema": "N\u00e3o h\u00e1 fuga ao tema.",
+      "desc_tangenciamento_tema": "N\u00e3o h\u00e1 tangenciamento ao tema.",
+      "desc_nao_atendimento_tipo_textual": "O texto atende ao tipo textual dissertativo-argumentativo, apresentando introdu\u00e7\u00e3o, desenvolvimento e conclus\u00e3o."
+    }
+  },
+  "competencia_3": {
+    "notas": {
+      "organizacao_textual": 6,
+      "selecao_argumentos": 8,
+      "articulacao_ideias": 6,
+      "defesa_ponto_vista": 8
+    },
+    "descricoes": {
+      "organizacao_textual": "A organiza\u00e7\u00e3o textual \u00e9 adequada, com par\u00e1grafos bem definidos e uma progress\u00e3o tem\u00e1tica clara. No entanto, a transi\u00e7\u00e3o entre algumas ideias poderia ser mais fluida.",
+      "selecao_argumentos": "Os argumentos selecionados s\u00e3o pertinentes e relevantes para a defesa do ponto de vista. A estudante utiliza exemplos concretos para ilustrar seus argumentos, como a quest\u00e3o da ridiculariza\u00e7\u00e3o de rituais ind\u00edgenas.",
+      "articulacao_ideias": "A articula\u00e7\u00e3o entre as ideias \u00e9 satisfat\u00f3ria, mas poderia ser aprimorada com o uso de conectivos mais precisos e diversificados. Em alguns momentos, a rela\u00e7\u00e3o entre os argumentos n\u00e3o \u00e9 totalmente clara.",
+      "defesa_ponto_vista": "O ponto de vista \u00e9 defendido de forma consistente e clara ao longo do texto. A estudante argumenta que a apropria\u00e7\u00e3o cultural no Carnaval pode ser prejudicial por refor\u00e7ar estere\u00f3tipos e preconceitos."
+    }
+  },
+  "competencia_4": {
+    "notas": {
+      "coesao_textual": 6,
+      "dominio_recursos_coesivos": 6,
+      "referenciacao": 6,
+      "estrutura_paragrafo": 6,
+      "estrutura_periodos": 4
+    },
+    "descricoes": {
+      "coesao_textual": "O texto apresenta alguns problemas de coes\u00e3o, como a repeti\u00e7\u00e3o de termos e a falta de conectivos em alguns momentos. Isso prejudica a fluidez da leitura e a clareza da argumenta\u00e7\u00e3o.",
+      "dominio_recursos_coesivos": "A estudante utiliza alguns recursos coesivos, como conjun\u00e7\u00f5es e pronomes, mas poderia diversificar e utilizar conectivos mais adequados para articular as ideias.",
+      "referenciacao": "A referencia\u00e7\u00e3o \u00e9 adequada, mas poderia ser mais precisa em alguns momentos.",
+      "estrutura_paragrafo": "Os par\u00e1grafos est\u00e3o bem estruturados, com t\u00f3pico frasal e desenvolvimento das ideias. No entanto, alguns par\u00e1grafos s\u00e3o muito longos e poderiam ser divididos para facilitar a leitura.",
+      "estrutura_periodos": "H\u00e1 alguns problemas na estrutura dos per\u00edodos, como frases truncadas e per\u00edodos muito longos. Isso prejudica a clareza e a fluidez da leitura."
+    }
+  },
+  "competencia_5": {
+    "notas": {
+      "compreensao_problema": 8,
+      "proposta_intervencao": 8,
+      "viabilidade_proposta": 6
+    },
+    "flags": {
+      "respeito_direitos_humanos": true
+    },
+    "descricoes": {
+      "compreensao_problema": "A estudante demonstra ter compreendido o problema da apropria\u00e7\u00e3o cultural no Carnaval, relacionando-o com quest\u00f5es como preconceito, estere\u00f3tipos e desrespeito \u00e0 diversidade cultural.",
+      "proposta_intervencao": "A proposta de interven\u00e7\u00e3o \u00e9 abrangente e inclui a educa\u00e7\u00e3o como ferramenta para combater a apropria\u00e7\u00e3o cultural. A estudante sugere a inclus\u00e3o de conte\u00fados sobre afrodescend\u00eancia, ind\u00edgenas e feminismo na grade curricular das escolas, al\u00e9m de atividades pr\u00e1ticas e palestras para a comunidade.",
+      "viabilidade_proposta": "A proposta \u00e9 vi\u00e1vel, mas poderia ser mais detalhada em rela\u00e7\u00e3o \u00e0 sua implementa\u00e7\u00e3o. A estudante menciona o Minist\u00e9rio da Educa\u00e7\u00e3o como agente, mas n\u00e3o especifica como a proposta seria colocada em pr\u00e1tica nas escolas e na sociedade."
+    }
+  }
+}
