@@ -39,7 +39,7 @@ fastapi==0.115.0
     # via api (api/pyproject.toml)
 fastapi-cli==0.0.5
     # via fastapi
-h11==0.14.0
+h11==0.16.0
     # via
     #   httpcore
     #   uvicorn
