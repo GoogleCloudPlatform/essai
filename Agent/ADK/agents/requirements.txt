@@ -45,7 +45,7 @@ httpx==0.28.1
 httpx-sse==0.4.0
 idna==3.10
 importlib_metadata==8.6.1
-mcp==1.9.0
+mcp==1.23.0
 numpy==2.2.6
 opentelemetry-api==1.33.1
 opentelemetry-exporter-gcp-trace==1.9.0
