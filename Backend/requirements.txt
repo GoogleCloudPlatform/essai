@@ -76,7 +76,7 @@ pygments==2.18.0
     # via rich
 pyjwt==2.9.0
     # via api (api/pyproject.toml)
-python-dotenv==1.0.1
+python-dotenv==1.2.2
     # via
     #   pydantic-settings
     #   uvicorn
