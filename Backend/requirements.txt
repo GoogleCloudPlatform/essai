@@ -74,7 +74,7 @@ pydantic-settings==2.5.2
     # via api (api/pyproject.toml)
 pygments==2.18.0
     # via rich
-pyjwt==2.9.0
+pyjwt==2.13.0
     # via api (api/pyproject.toml)
 python-dotenv==1.0.1
     # via
