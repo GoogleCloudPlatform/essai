@@ -35,6 +35,10 @@ machine_type = "t2d-standard-1"
 
 # Cloud Run
 shared_cloud_run = "your-cloud-run-base-name"
+cloudrun_ingress = "internal-and-cloud-load-balancing"
+# cloudrun_invoker_members       = ["serviceAccount:{your-caller-sa}@{your-gcp-project-id}.iam.gserviceaccount.com"]
+# cloudrun_oidc_audience         = "https://{your-cloud-run-url}"
+# cloudrun_allowed_caller_emails = ["{your-caller-sa}@{your-gcp-project-id}.iam.gserviceaccount.com"]
 
 # Cloud Function
 function_name = "your-function-name"

@@ -92,3 +92,40 @@ variable "destroy_module" {
   type    = bool
   default = true
 }
+
+variable "cloudrun_ingress" {
+  type        = string
+  default     = "internal-and-cloud-load-balancing"
+  description = "Cloud Run ingress setting for the Backend API ('internal' or 'internal-and-cloud-load-balancing')."
+
+  validation {
+    condition     = contains(["internal", "internal-and-cloud-load-balancing"], var.cloudrun_ingress)
+    error_message = "cloudrun_ingress must be 'internal' or 'internal-and-cloud-load-balancing' (not 'all')."
+  }
+}
+
+variable "cloudrun_invoker_members" {
+  type        = list(string)
+  default     = []
+  description = "Explicit IAM principals allowed to invoke the Backend Cloud Run service. Defaults to [var.email] when empty."
+
+  validation {
+    condition = (
+      !contains(var.cloudrun_invoker_members, "allUsers") &&
+      !contains(var.cloudrun_invoker_members, "allAuthenticatedUsers")
+    )
+    error_message = "cloudrun_invoker_members must not include allUsers or allAuthenticatedUsers."
+  }
+}
+
+variable "cloudrun_oidc_audience" {
+  type        = string
+  default     = ""
+  description = "Expected OIDC token audience (aud claim) validated by the Backend API."
+}
+
+variable "cloudrun_allowed_caller_emails" {
+  type        = list(string)
+  default     = []
+  description = "Optional allow-list of verified caller emails permitted by the Backend API."
+}

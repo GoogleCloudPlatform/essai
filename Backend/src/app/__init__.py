@@ -18,7 +18,7 @@ from fastapi import FastAPI
 
 from app.config import tags_metadata, SUMMARY
 from app.routes import router
-from app.database import create_db_and_tables
+from app.security import SecurityHeadersAndMethodsMiddleware
 
 
 @asynccontextmanager
@@ -36,6 +36,7 @@ def create_app() -> FastAPI:
         openapi_tags=tags_metadata,
     )
 
+    app.add_middleware(SecurityHeadersAndMethodsMiddleware)
     app.include_router(router)
 
     return app

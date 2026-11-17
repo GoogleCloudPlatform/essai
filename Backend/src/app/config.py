@@ -44,6 +44,22 @@ class Settings(BaseSettings):
 
     PUBSUB_TOPIC_NAME: str = "test_topic"
 
+    # Google OIDC Bearer token verification (fail-closed if unset)
+    OIDC_AUDIENCE: str = ""
+    ALLOWED_CALLER_EMAILS: str = ""
+
+    # Per-caller sliding-window rate limiting
+    RATE_LIMIT_REQUESTS: int = 60
+    RATE_LIMIT_WINDOW_SECONDS: int = 60
+
+    @property
+    def allowed_caller_emails_set(self) -> frozenset[str]:
+        return frozenset(
+            email.strip().lower()
+            for email in self.ALLOWED_CALLER_EMAILS.split(",")
+            if email.strip()
+        )
+
 
 @lru_cache()
 def get_settings() -> Settings:

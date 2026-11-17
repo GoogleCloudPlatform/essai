@@ -16,21 +16,28 @@ import logging
 
 from google.cloud import pubsub_v1
 
-from app.config import settings
+from app.config import get_settings
 from app import schemas
 
 
 log = logging.getLogger("uvicorn")
 
-publisher = pubsub_v1.PublisherClient()
-TOPIC = settings.PUBSUB_TOPIC_NAME
+_publisher: pubsub_v1.PublisherClient | None = None
+
+
+def get_publisher() -> pubsub_v1.PublisherClient:
+    global _publisher
+    if _publisher is None:
+        _publisher = pubsub_v1.PublisherClient()
+    return _publisher
+
 
 def submit_to_queue(data: schemas.InProgress) -> None:
     """create entry on pubsub topic"""
-
+    topic = get_settings().PUBSUB_TOPIC_NAME
     log.info(f"publishing id '{data.id}'")
-    publisher.publish(
-        topic=TOPIC,
-        data=str(data.id).encode('utf-8'),
+    get_publisher().publish(
+        topic=topic,
+        data=str(data.id).encode("utf-8"),
     )
 

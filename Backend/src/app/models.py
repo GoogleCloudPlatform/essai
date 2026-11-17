@@ -38,6 +38,7 @@ class Requisicao(SQLModel, table=True):
         default_factory=TS_NOW,
         sa_column_kwargs={"onupdate": TS_NOW},
     )
+    owner_id: str | None = Field(default=None, index=True)
     TokenRedacao: str
     DescDependencia: str
     IdMunicipio: str
@@ -182,7 +183,7 @@ class Feedback(SQLModel, table=True):
     justificativa_final_justificativa: str | None
     justificativa_final_is_modified: bool = False
 
-    nota_avaliacao_ia: int
-    feedback_geral_ia: str
+    nota_avaliacao_ia: int | None = None
+    feedback_geral_ia: str | None = None
 
     requisicao: Requisicao = Relationship(back_populates="feedback")

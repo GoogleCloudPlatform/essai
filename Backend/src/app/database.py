@@ -19,12 +19,15 @@ import pg8000
 from google.cloud.sql.connector import Connector, IPTypes
 from sqlalchemy.engine.base import Engine
 
-from app.config import settings
+from app.config import get_settings
 
 log = logging.getLogger("uvicorn")
 
+_engine: Engine | None = None
+
 
 def connect_with_connector() -> Engine:
+    settings = get_settings()
     instance_connection_name = settings.INSTANCE_CONNECTION_NAME
     db_user = settings.IAM_USER
     db_name = settings.POSTGRES_DB
@@ -56,16 +59,25 @@ def connect_with_connector() -> Engine:
     return pool
 
 
-engine = connect_with_connector()
+def get_engine() -> Engine:
+    global _engine
+    if _engine is None:
+        _engine = connect_with_connector()
+    return _engine
+
+
+def set_engine(engine: Engine | None) -> None:
+    global _engine
+    _engine = engine
 
 
 def create_db_and_tables():
     log.info("Creating (if not exists) database tables...")
-    SQLModel.metadata.create_all(engine)
+    SQLModel.metadata.create_all(get_engine())
 
 
 def drop_all_tables():
-    with Session(bind=engine) as session:
+    with Session(bind=get_engine()) as session:
         for t in ["requisicao", "correcoes", "feedback"]:
             log.warning(f"droping table - {t}")
             session.exec(text(f"DROP TABLE {t} CASCADE"))
