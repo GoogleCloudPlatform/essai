@@ -12,11 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from fastapi import Depends
+
 from app import create_app
+from app.security import enforce_ip_rate_limit
 
 
 app = create_app()
 
-@app.get("/health", tags=["meta"])
+
+@app.get("/health", tags=["meta"], dependencies=[Depends(enforce_ip_rate_limit)])
 async def health_check():
     return {"status": "running"}

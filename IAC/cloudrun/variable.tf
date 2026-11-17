@@ -39,3 +39,40 @@ variable "email_svc" {
 variable "shared_cloud_run" {
   type = string
 }
+
+variable "ingress" {
+  type        = string
+  default     = "internal-and-cloud-load-balancing"
+  description = "Cloud Run ingress setting. Direct public ingress ('all') is prohibited."
+
+  validation {
+    condition     = contains(["internal", "internal-and-cloud-load-balancing"], var.ingress)
+    error_message = "Cloud Run ingress must be 'internal' or 'internal-and-cloud-load-balancing' (not 'all')."
+  }
+}
+
+variable "invoker_members" {
+  type        = list(string)
+  description = "Explicit IAM principals granted roles/run.invoker on the Backend Cloud Run service."
+
+  validation {
+    condition = (
+      length(var.invoker_members) > 0 &&
+      !contains(var.invoker_members, "allUsers") &&
+      !contains(var.invoker_members, "allAuthenticatedUsers")
+    )
+    error_message = "invoker_members must contain at least one explicit principal and must not include allUsers or allAuthenticatedUsers."
+  }
+}
+
+variable "oidc_audience" {
+  type        = string
+  default     = ""
+  description = "Expected OIDC token audience (aud claim) enforced by the Backend API."
+}
+
+variable "allowed_caller_emails" {
+  type        = list(string)
+  default     = []
+  description = "Optional allow-list of verified caller emails permitted by the Backend API."
+}

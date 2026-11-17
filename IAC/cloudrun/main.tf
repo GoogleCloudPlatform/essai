@@ -27,7 +27,7 @@ resource "google_cloud_run_service" "default" {
 
   metadata {
     annotations = {
-      "run.googleapis.com/ingress" : "all"
+      "run.googleapis.com/ingress" = var.ingress
     }
   }
   template {
@@ -37,6 +37,7 @@ resource "google_cloud_run_service" "default" {
       }
     }
     spec {
+      service_account_name = var.email_svc
       containers {
         image = "southamerica-east1-docker.pkg.dev/${var.project_id}/apps/${var.shared_cloud_run}:latest"
         env {
@@ -59,6 +60,14 @@ resource "google_cloud_run_service" "default" {
           name  = "PUBSUB_TOPIC_NAME"
           value = "projects/${var.project_id}/topics/${var.pubsub}"
         }
+        env {
+          name  = "OIDC_AUDIENCE"
+          value = var.oidc_audience
+        }
+        env {
+          name  = "ALLOWED_CALLER_EMAILS"
+          value = join(",", var.allowed_caller_emails)
+        }
       }
     }
   }
@@ -69,8 +78,6 @@ resource "google_cloud_run_service_iam_binding" "default" {
   location   = google_cloud_run_service.default.location
   service    = google_cloud_run_service.default.name
   role       = "roles/run.invoker"
-  members = [
-    "allUsers"
-  ]
+  members    = var.invoker_members
 }
 

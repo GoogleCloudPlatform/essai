@@ -120,15 +120,19 @@ module "google_compute_engine" {
 }
 
 module "google_cloud_run" {
-  source           = "./cloudrun"
-  project_id       = var.project_id
-  region           = var.region
-  network_name     = var.network_name
-  cloudsql_name    = var.cloudsql_name
-  email_svc        = var.email_svc
-  pubsub           = var.pubsub
-  shared_cloud_run = var.shared_cloud_run
-  depends_on       = [module.google_services, module.google_compute_engine, module.google_networks, module.google_registry]
+  source                = "./cloudrun"
+  project_id            = var.project_id
+  region                = var.region
+  network_name          = var.network_name
+  cloudsql_name         = var.cloudsql_name
+  email_svc             = var.email_svc
+  pubsub                = var.pubsub
+  shared_cloud_run      = var.shared_cloud_run
+  ingress               = var.cloudrun_ingress
+  invoker_members       = length(var.cloudrun_invoker_members) > 0 ? var.cloudrun_invoker_members : [var.email]
+  oidc_audience         = var.cloudrun_oidc_audience
+  allowed_caller_emails = var.cloudrun_allowed_caller_emails
+  depends_on            = [module.google_services, module.google_compute_engine, module.google_networks, module.google_registry]
 }
 
 module "google_cloud_function" {

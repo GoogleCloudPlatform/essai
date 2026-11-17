@@ -13,13 +13,20 @@
 # limitations under the License.
 
 import uuid
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
 
 from app import schemas, crud
-from app.config import settings
+from app.auth import CallerIdentity, get_current_caller
+from app.config import get_settings
+from app.security import enforce_caller_rate_limit
 
 
-router = APIRouter()
+router = APIRouter(
+    dependencies=[
+        Depends(get_current_caller),
+        Depends(enforce_caller_rate_limit),
+    ]
+)
 
 
 @router.post(
@@ -30,8 +37,9 @@ router = APIRouter()
 )
 async def submit_essay(
     payload: schemas.InboundSchema,
+    caller: CallerIdentity = Depends(get_current_caller),
 ):
-    requisicao = crud.create_requisicao(payload)
+    requisicao = crud.create_requisicao(payload, owner_id=caller.subject)
     crud.submit_to_queue(requisicao)
 
     return schemas.GradingSubmitionSchema(id=requisicao.id)
@@ -41,8 +49,11 @@ async def submit_essay(
     "/feedback",
     tags=["inbound"],
 )
-async def submit_feedback(payload: schemas.FeedbackSubmissionSchema):
-    feedback_id = crud.create_feedback(payload)
+async def submit_feedback(
+    payload: schemas.FeedbackSubmissionSchema,
+    caller: CallerIdentity = Depends(get_current_caller),
+):
+    feedback_id = crud.create_feedback(payload, owner_id=caller.subject)
     return {"id": feedback_id, "status": "success"}
 
 
@@ -51,16 +62,17 @@ async def submit_feedback(payload: schemas.FeedbackSubmissionSchema):
     responses={
         200: {"model": schemas.OutboundSchema},
         202: {"model": schemas.InProgress},
+        401: {"description": "Não autenticado"},
+        403: {"description": "Não autorizado"},
         404: {"description": "Correção não encontrada"},
     },
     tags=["outbound"],
 )
 async def get_correcao_by_id(
     id: uuid.UUID,
+    caller: CallerIdentity = Depends(get_current_caller),
 ):
-    # correcao_id = schemas.CorrecaoSubmitionSchema(id=id)
-    # resposta = crud.get_correcao(correcao_id)
-    resposta = crud.get_correcao(id)
+    resposta = crud.get_correcao(id, owner_id=caller.subject)
 
     return resposta
 
@@ -72,13 +84,15 @@ async def get_correcao_by_id(
 )
 async def get_bulk_correcao(
     id_list: list[uuid.UUID],
+    caller: CallerIdentity = Depends(get_current_caller),
 ):
+    settings = get_settings()
     if len(id_list) > settings.MAX_IDS_BULK_READ:
         raise HTTPException(
             status_code=400,
             detail=f"Too many ids; current max is {settings.MAX_IDS_BULK_READ}",
         )
 
-    results = crud.get_correcao_bulk(id_list)
+    results = crud.get_correcao_bulk(id_list, owner_id=caller.subject)
 
     return results
