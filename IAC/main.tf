@@ -80,13 +80,14 @@ module "google_registry" {
 }
 
 module "google_networks" {
-  source        = "./db-vpc"
-  project_id    = var.project_id
-  region        = var.region
-  network_name  = var.network_name
-  subnet_name   = var.subnet_name
-  cloudsql_name = var.cloudsql_name
-  depends_on    = [module.google_services]
+  source                 = "./db-vpc"
+  project_id             = var.project_id
+  region                 = var.region
+  network_name           = var.network_name
+  subnet_name            = var.subnet_name
+  cloudsql_name          = var.cloudsql_name
+  cloudsql_root_password = var.cloudsql_root_password
+  depends_on             = [module.google_services]
 }
 
 module "google_storage" {
@@ -110,13 +111,16 @@ module "google_cloud_user" {
 }
 
 module "google_compute_engine" {
-  source       = "./compute-engine"
-  project_id   = var.project_id
-  region       = var.region
-  network_name = var.network_name
-  subnet_name  = var.subnet_name
-  machine_type = var.machine_type
-  depends_on   = [module.google_services, module.google_networks, module.google_cloud_user]
+  source                           = "./compute-engine"
+  project_id                       = var.project_id
+  region                           = var.region
+  network_name                     = var.network_name
+  subnet_name                      = var.subnet_name
+  machine_type                     = var.machine_type
+  email_svc                        = var.email_svc
+  name_user_sql                    = var.name_user_sql
+  cloudsql_root_password_secret_id = module.google_networks.cloudsql_root_password_secret_id
+  depends_on                       = [module.google_services, module.google_networks, module.google_cloud_user]
 }
 
 module "google_cloud_run" {
@@ -142,6 +146,7 @@ module "google_cloud_function" {
   function_name = var.function_name
   pubsub        = var.pubsub
   email_svc     = var.email_svc
+  cloudsql_name = var.cloudsql_name
   region        = var.region
   depends_on    = [module.google_services, module.google_cloud_pub-sub, module.google_networks]
 }

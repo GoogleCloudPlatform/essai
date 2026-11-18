@@ -12,9 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+resource "random_password" "cloudsql_root_password" {
+  count            = var.cloudsql_root_password == null ? 1 : 0
+  length           = 24
+  special          = true
+  override_special = "!@#%^&*()-_=+[]{}<>?"
+}
+
 locals {
-  network_name = var.network_name
-  subnet_name  = var.subnet_name
+  network_name           = var.network_name
+  subnet_name            = var.subnet_name
+  cloudsql_root_password = var.cloudsql_root_password != null ? var.cloudsql_root_password : random_password.cloudsql_root_password[0].result
 }
 
 resource "null_resource" "wait_for_network" {
@@ -108,7 +116,7 @@ resource "google_sql_database_instance" "postgresql" {
   region              = var.region
   database_version    = "POSTGRES_15"
   deletion_protection = false
-  root_password       = "hn48278$rPlA"
+  root_password       = local.cloudsql_root_password
 
   depends_on = [google_service_networking_connection.private_vpc_connection,
   google_compute_subnetwork.subnet_redacao, null_resource.wait_for_database]
@@ -129,6 +137,24 @@ resource "google_sql_database_instance" "postgresql" {
       enabled = true
     }
   }
+}
+
+resource "google_secret_manager_secret" "cloudsql_root_password" {
+  project   = var.project_id
+  secret_id = "${var.cloudsql_name}-root-password"
+
+  replication {
+    user_managed {
+      replicas {
+        location = var.region
+      }
+    }
+  }
+}
+
+resource "google_secret_manager_secret_version" "cloudsql_root_password" {
+  secret      = google_secret_manager_secret.cloudsql_root_password.id
+  secret_data = local.cloudsql_root_password
 }
 
 resource "google_dns_managed_zone" "private_zone" {

@@ -129,3 +129,21 @@ variable "cloudrun_allowed_caller_emails" {
   default     = []
   description = "Optional allow-list of verified caller emails permitted by the Backend API."
 }
+
+variable "cloudsql_root_password" {
+  type        = string
+  default     = null
+  sensitive   = true
+  description = "Optional custom root password for Cloud SQL PostgreSQL (prefer leaving null to auto-generate and store in Secret Manager; never commit to terraform.tfvars)."
+
+  validation {
+    condition = (
+      var.cloudsql_root_password == null ? true : (
+        length(trimspace(var.cloudsql_root_password)) >= 16 &&
+        sha256(var.cloudsql_root_password) != "7d818ddded5b16b4fe60e1f519f8c1a3d47982287785b783a8b10364c6f4e103" &&
+        !can(regex("^(password|postgres|admin|changeme|your-)", lower(trimspace(var.cloudsql_root_password))))
+      )
+    )
+    error_message = "cloudsql_root_password must be null (auto-generated) or a strong secret of at least 16 characters that does not reuse leaked or placeholder passwords."
+  }
+}

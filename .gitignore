@@ -1,0 +1,21 @@
+# Environment & secret files (never commit live credentials)
+.env
+.env.*
+!.env.example
+.secrets.toml
+
+# Terraform state, lock, and local plugin caches
+.terraform/
+*.tfstate
+*.tfstate.*
+.terraform.lock.hcl
+IAC/temp/function-source.zip
+
+# Python caches & virtual environments
+__pycache__/
+*.py[cod]
+.venv/
+
+# OS & editor artifacts
+.DS_Store
+*:Zone.Identifier
