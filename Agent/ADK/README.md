@@ -24,6 +24,11 @@ API_PORT=8080
 # URL for essay correction (will be set automatically after API deploy)
 CORRECAO_API_URL=https://your-api-url.a.run.app/corrigir-redacao/
 
+# Gemini credentials (set GEMINI_API_KEY/GOOGLE_API_KEY, OR set GOOGLE_GENAI_USE_VERTEXAI=true with GCP_PROJECT)
+# Never commit your .env file to source control; copy agents/essai/.env.example for local agent dev.
+GOOGLE_GENAI_USE_VERTEXAI=FALSE
+GEMINI_API_KEY=your-gemini-api-key
+
 # Vertex AI model
 LLM_MODEL=gemini-2.5-flash-preview-05-20
 

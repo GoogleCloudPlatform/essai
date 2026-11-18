@@ -27,6 +27,7 @@ variable "gcp_service_list" {
     "run.googleapis.com",
     "vpcaccess.googleapis.com",
     "cloudfunctions.googleapis.com",
-    "aiplatform.googleapis.com"
+    "aiplatform.googleapis.com",
+    "secretmanager.googleapis.com"
   ]
 }

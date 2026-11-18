@@ -12,36 +12,42 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+resource "google_secret_manager_secret_iam_member" "psql_vm_secret_accessor" {
+  project   = var.project_id
+  secret_id = var.cloudsql_root_password_secret_id
+  role      = "roles/secretmanager.secretAccessor"
+  member    = "serviceAccount:${var.email_svc}"
+}
+
 resource "google_compute_instance" "psql-instance" {
   name         = "psql"
   machine_type = var.machine_type
+  depends_on   = [google_secret_manager_secret_iam_member.psql_vm_secret_accessor]
+
+  service_account {
+    email  = var.email_svc
+    scopes = ["https://www.googleapis.com/auth/cloud-platform"]
+  }
 
   metadata_startup_script = <<-EOF
+    #!/bin/bash
+    set -euo pipefail
 
-    #!/bin/bash 
-    
     sudo apt update -y
-
     sudo apt-get install wget sudo curl gnupg2 -y
-    
     sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
-
     sudo wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
-
     sudo apt -y update
-
     sudo apt-get install postgresql-15 -y
-    
     sudo systemctl start postgresql
-
     sudo systemctl enable postgresql
 
-    export PGPASSWORD='hn48278$rPlA'
+    PGPASSWORD="$(gcloud secrets versions access latest --secret="${var.cloudsql_root_password_secret_id}" --project="${var.project_id}")"
+    trap 'unset PGPASSWORD' EXIT
 
-    psql -h postgresql.local.poc.br -p 5432 -U postgres -d postgres -c "GRANT CREATE ON SCHEMA public TO \"{your-compute-service-account-name}@developer"\";
-
+    printf 'GRANT CREATE ON SCHEMA public TO :"db_user";\n' | \
+      PGPASSWORD="$PGPASSWORD" psql -h postgresql.local.poc.br -p 5432 -U postgres -d postgres -v ON_ERROR_STOP=1 -v db_user="${var.name_user_sql}"
     EOF
-
 
   boot_disk {
     initialize_params {

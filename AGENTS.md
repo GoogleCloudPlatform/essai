@@ -59,27 +59,30 @@ cd Agent/ADK/api && uvicorn main:app --host 0.0.0.0 --port 8000
 # ADK Agent deploy (CWD must be Agent/ADK/agents/ for ../.env, essai, requirements.txt)
 cd Agent/ADK/agents && python3 deploy_vertex.py
 
-# Terraform syntax/schema validation & Cloud Run security tests (run from IAC/, NOT repo root)
+# Terraform syntax/schema validation & security tests (run from IAC/ or submodules, NOT repo root)
 cd IAC && terraform init -backend=false && terraform validate
 cd IAC/cloudrun && terraform init -backend=false && terraform test
+cd IAC/db-vpc && terraform init -backend=false && terraform test
+cd IAC/compute-engine && terraform init -backend=false && terraform test
+cd IAC/function && terraform init -backend=false && terraform test
 ```
 
 ## Things a Newcomer Will Get Wrong
 
 - **Do not delete `IAC/temp/`**: `IAC/temp/function-source/` is the live Cloud Function consumer deployed by `IAC/function/main.tf`.
-- **No root `.gitignore` + tracked credential placeholders**: `IAC/svc.json` and `IAC/terraform.tfvars` are committed templates — never commit real GCP keys or project details. Avoid adding Windows `:Zone.Identifier` or `__pycache__` files (some are already tracked under `Agent/ADK/api/`).
+- **Tracked credential templates & `.gitignore`**: Root `.gitignore` ignores `.env`, `.env.*` (except `.env.example`), `.secrets.toml`, `.terraform/`, and `*.tfstate*`. `IAC/svc.json` and `IAC/terraform.tfvars` are committed templates — never commit real GCP keys, passwords, or project details. Avoid adding Windows `:Zone.Identifier` or `__pycache__` files (some are already tracked under `Agent/ADK/api/`).
 - **Docs drift from reality**:
   - `docs/concepts-architecture.md` shows Streamlit talking to `Backend/`, but `Frontend/` calls Gemini directly.
   - `docs/deploying-essai.md` instructs running `terraform init/apply` from repo root — the Terraform root is `IAC/`.
   - `docs/translating-responses.md` references uncommenting `"Dê todos os resultados em inglês."` at line 298 — that line does not exist in any prompt file.
   - `Agent/ADK/README.md` runs `python3 agents/deploy_vertex.py` from `Agent/ADK/`, but `deploy_vertex.py` expects CWD = `Agent/ADK/agents/`.
 - **Local DB vs. Cloud SQL in `Backend/`**: `Backend/docker-compose.yaml` defines a local `postgres` service, but `app/database.py` is hardcoded to Cloud SQL Connector (`IPTypes.PRIVATE`) and does not connect to it. `create_db_and_tables()` is commented out in `app/__init__.py`. Existing Postgres instances must add `requisicao.owner_id` (`ALTER TABLE requisicao ADD COLUMN owner_id VARCHAR;`); rows with `owner_id IS NULL` fail closed.
-- **Hardcoded secrets, projects, regions & buckets**:
-  - `Agent/ADK/api/corretor_gemini/gemini_corretor.py` hardcodes a `genai.Client(api_key=...)`; `Agent/ADK/api/main.py` hardcodes `project="key-range-436019-t9"`.
-  - `IAC/temp/function-source/settings.toml` hardcodes `GCP_PROJECT_ID`, `DB_USER`, and `INSTANCE_CONNECTION_NAME`. `config.py` configures `Dynaconf(envvar_prefix="DYNACONF")`, while `IAC/function/main.tf` injects `GCP_PROJECT_ID`/`GCP_LOCATION` **without** the `DYNACONF_` prefix — so Terraform env vars do not override `settings.toml`.
+- **Secrets, runtime config & remaining hardcoded infra assumptions**:
+  - `Agent/ADK/api/corretor_gemini/gemini_corretor.py` fails closed unless `GEMINI_API_KEY`/`GOOGLE_API_KEY` (or `GOOGLE_GENAI_USE_VERTEXAI=true` + `GCP_PROJECT`) is configured via environment; `Agent/ADK/agents/essai/.env.example` is a template (never commit `.env`).
+  - `IAC/db-vpc/main.tf` generates a random 24-character Cloud SQL `root_password` (or validates a strong `sensitive` `var.cloudsql_root_password`) and stores it in Secret Manager; `IAC/compute-engine/main.tf` fetches it at runtime via `gcloud secrets versions access` using least-privilege `roles/secretmanager.secretAccessor`. Both modules still contain `sleep 40`/`sleep 300` `local-exec` waits in `db-vpc`.
+  - `IAC/temp/function-source/settings.toml` holds only static prompt paths and `DB_DATABASE`; `GCP_PROJECT_ID`, `GCP_LOCATION`, `DB_USER`, and `INSTANCE_CONNECTION_NAME` are injected via `IAC/function/main.tf` (`DYNACONF_*` + unprefixed) and fail closed via `require_setting()` in `config.py`.
   - `IAC/main.tf`, `IAC/cloudrun/main.tf`, and `IAC/function/variables.tf` hardcode `southamerica-east1` in Artifact Registry URLs and the Eventarc trigger even if `var.region` changes.
   - `IAC/iam/main.tf` uses authoritative `google_project_iam_binding`, overwriting all other project members for those admin roles.
-  - `IAC/db-vpc/main.tf` and `IAC/compute-engine/main.tf` share a hardcoded Postgres `root_password` and use `sleep 40`/`sleep 300` `local-exec` waits.
   - `IAC/temp/function-source/src/corretor_gemini/utils/imageUploader.py` hardcodes `bucket_name='imagens-redacaopr'` and imports `googleapiclient` (missing from `IAC/temp/function-source/requirements.txt`).
 - **Known broken or unfinished paths (do not assume they work as-is)**:
   - `Backend/src/app/schemas.py` (`InboundSchema`) includes `IdTurma`, which is absent from `models.Requisicao`; `Backend/src/app/enums.py` (`NStars`) uses type annotations (`UM: 1`) instead of assignments (`UM = 1`).

@@ -32,8 +32,8 @@ resource "google_storage_bucket" "default" {
 
 data "archive_file" "default" {
   type        = "zip"
-  source_dir  = "./temp/function-source"
-  output_path = "./temp/function-source.zip"
+  source_dir  = "${path.module}/../temp/function-source"
+  output_path = "${path.module}/../temp/function-source.zip"
 }
 
 resource "google_storage_bucket_object" "default" {
@@ -68,10 +68,17 @@ resource "google_cloudfunctions2_function" "default" {
     vpc_connector                  = google_vpc_access_connector.connector.name
     vpc_connector_egress_settings  = var.vpc_connector[2]
     environment_variables = {
-      LOG_EXECUTION_ID = "true"
-      GCP_PROJECT_ID   = "${var.project_id}"
-      GCP_LOCATION     = "${var.region}"
-
+      LOG_EXECUTION_ID                  = "true"
+      GCP_PROJECT_ID                    = var.project_id
+      GCP_LOCATION                      = var.region
+      DB_USER                           = var.email_svc
+      DB_DATABASE                       = var.db_database
+      INSTANCE_CONNECTION_NAME          = "${var.project_id}:${var.region}:${var.cloudsql_name}"
+      DYNACONF_GCP_PROJECT_ID           = var.project_id
+      DYNACONF_GCP_LOCATION             = var.region
+      DYNACONF_DB_USER                  = var.email_svc
+      DYNACONF_DB_DATABASE              = var.db_database
+      DYNACONF_INSTANCE_CONNECTION_NAME = "${var.project_id}:${var.region}:${var.cloudsql_name}"
     }
   }
 

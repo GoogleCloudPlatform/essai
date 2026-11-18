@@ -61,3 +61,21 @@ variable "nat_router" {
   default = ["AUTO_ONLY", "LIST_OF_SUBNETWORKS", "ALL_IP_RANGES", "ERRORS_ONLY"]
   type    = list(string)
 }
+
+variable "cloudsql_root_password" {
+  type        = string
+  default     = null
+  sensitive   = true
+  description = "Optional custom root password for Cloud SQL PostgreSQL. When null (recommended), a random 24-character password is generated automatically and stored in Secret Manager."
+
+  validation {
+    condition = (
+      var.cloudsql_root_password == null ? true : (
+        length(trimspace(var.cloudsql_root_password)) >= 16 &&
+        sha256(var.cloudsql_root_password) != "7d818ddded5b16b4fe60e1f519f8c1a3d47982287785b783a8b10364c6f4e103" &&
+        !can(regex("^(password|postgres|admin|changeme|your-)", lower(trimspace(var.cloudsql_root_password))))
+      )
+    )
+    error_message = "cloudsql_root_password must be null (auto-generated) or a strong secret of at least 16 characters that does not reuse leaked or placeholder passwords."
+  }
+}

@@ -20,7 +20,7 @@ from sqlalchemy import Column, String, DateTime, JSON
 from datetime import datetime
 from src.models import CorrecaoModel
 from google.cloud.sql.connector import Connector, IPTypes
-from config import settings
+from config import require_setting, settings
 from uuid import uuid4
 import pytz
 import pg8000
@@ -31,9 +31,9 @@ import json
 class DatabaseConnector:
     def __init__(self):
         # Configurações da instância Cloud SQL e do banco de dados
-        self.instance_connection_name = settings.INSTANCE_CONNECTION_NAME
-        self.database = settings.DB_DATABASE
-        self.iam_user = settings.DB_USER
+        self.instance_connection_name = require_setting(settings, "INSTANCE_CONNECTION_NAME")
+        self.database = require_setting(settings, "DB_DATABASE")
+        self.iam_user = require_setting(settings, "DB_USER")
         self.ip_type = IPTypes.PRIVATE 
         self.connector = Connector(ip_type=self.ip_type)
 

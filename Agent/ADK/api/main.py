@@ -2,9 +2,11 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from typing import Dict, Any
 import json
+import logging
 from corretor_gemini.gemini_corretor import Corretor, Correcao
 import os
 
+logger = logging.getLogger(__name__)
 app = FastAPI(title="Corretor de Redação ENEM")
 
 class RedacaoRequest(BaseModel):
@@ -15,11 +17,11 @@ class RedacaoRequest(BaseModel):
 @app.post("/corrigir-redacao/", response_model=Dict[str, Any])
 async def corrigir_redacao(request: RedacaoRequest):
     try:
-        # Configuração do corretor
+        # Configuração do corretor (credenciais e projeto lidos do ambiente)
         corretor = Corretor(
             caminho_prompts="Prompts",
             corretor_path="Enem",
-            project="key-range-436019-t9",
+            project=os.environ.get("GCP_PROJECT") or os.environ.get("GOOGLE_CLOUD_PROJECT"),
             dummy=False,
             ignore_json=False
         )
@@ -38,15 +40,23 @@ async def corrigir_redacao(request: RedacaoRequest):
         resposta = construir_resposta(correcao)
         return resposta
         
-    except json.JSONDecodeError as e:
+    except json.JSONDecodeError:
+        logger.exception("Erro ao decodificar resposta JSON do modelo.")
         raise HTTPException(
-            status_code=422, 
-            detail=f"Erro ao decodificar resposta do modelo: {str(e)}"
+            status_code=422,
+            detail="Erro ao decodificar resposta do modelo."
         )
-    except Exception as e:
+    except ValueError:
+        logger.exception("Configuração de credenciais ausente ou inválida.")
         raise HTTPException(
-            status_code=500, 
-            detail=f"Erro na correção da redação: {str(e)}"
+            status_code=503,
+            detail="Serviço de correção indisponível por configuração ausente."
+        )
+    except Exception:
+        logger.exception("Erro interno na correção da redação.")
+        raise HTTPException(
+            status_code=500,
+            detail="Erro interno na correção da redação."
         )
 
 def construir_resposta(correcao: Correcao) -> Dict[str, Any]:
@@ -83,6 +93,6 @@ def construir_resposta(correcao: Correcao) -> Dict[str, Any]:
 
 if __name__ == "__main__":
     import uvicorn
-    host = os.environ.get("API_HOST", "0.0.0.0")
+    host = os.environ.get("API_HOST", "127.0.0.1")
     port = int(os.environ.get("API_PORT", 8000))
     uvicorn.run(app, host=host, port=port)

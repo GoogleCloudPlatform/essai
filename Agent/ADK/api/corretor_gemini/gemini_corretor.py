@@ -58,17 +58,63 @@ class Corretor:
                  project: str = None,
                  dummy: bool = False,
                  ignore_json: bool = False,
-                 corretor_path : str = None):
-        
-        vertexai.init(project=project, location="us-central1")
-        ##
-        ##
-        ## Mudar o API Key
-        ##
-        ##
-        ##
-        self.client = genai.Client(api_key='AIzaSyBq_1f0_Wz82ydH7ByzXablCDJEVT-jcbA')
-    
+                 corretor_path: str = None,
+                 api_key: str = None,
+                 location: str = None,
+                 use_vertexai: bool = None):
+
+        resolved_project = (
+            project
+            or os.environ.get("GCP_PROJECT")
+            or os.environ.get("GOOGLE_CLOUD_PROJECT")
+            or ""
+        ).strip() or None
+        resolved_location = (
+            location
+            or os.environ.get("GCP_LOCATION")
+            or os.environ.get("GOOGLE_CLOUD_LOCATION")
+            or "us-central1"
+        ).strip()
+        resolved_api_key = (
+            api_key
+            or os.environ.get("GEMINI_API_KEY")
+            or os.environ.get("GOOGLE_API_KEY")
+            or ""
+        ).strip() or None
+
+        env_use_vertexai = (
+            os.environ.get("GOOGLE_GENAI_USE_VERTEXAI", "").strip().lower()
+            in {"1", "true", "yes"}
+        )
+        resolved_use_vertexai = (
+            env_use_vertexai if use_vertexai is None else bool(use_vertexai)
+        )
+
+        if dummy:
+            self.client = None
+        elif resolved_use_vertexai:
+            if not resolved_project:
+                raise ValueError(
+                    "Vertex AI mode requires a GCP project via `project`, "
+                    "`GCP_PROJECT`, or `GOOGLE_CLOUD_PROJECT`."
+                )
+            vertexai.init(project=resolved_project, location=resolved_location)
+            self.client = genai.Client(
+                vertexai=True,
+                project=resolved_project,
+                location=resolved_location,
+            )
+        else:
+            if not resolved_api_key:
+                raise ValueError(
+                    "Missing Gemini API key. Set the `GEMINI_API_KEY` or "
+                    "`GOOGLE_API_KEY` environment variable, or enable Vertex AI "
+                    "with `GOOGLE_GENAI_USE_VERTEXAI=true` and `GCP_PROJECT`."
+                )
+            if resolved_project:
+                vertexai.init(project=resolved_project, location=resolved_location)
+            self.client = genai.Client(api_key=resolved_api_key)
+
         self.caminhos = {
             'corretor': {
                 'system_prompt': os.path.join(caminho_prompts, corretor_path, 'correcao_system_instruct.txt'),
@@ -87,7 +133,7 @@ class Corretor:
                 'config': os.path.join(caminho_prompts, 'Invalida' , 'invalida_config.json')
             }
         }
-        
+
         self.dummy = dummy
         self.ignore_json = ignore_json
 

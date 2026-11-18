@@ -36,6 +36,15 @@ variable "email_svc" {
   type = string
 }
 
+variable "cloudsql_name" {
+  type = string
+}
+
+variable "db_database" {
+  type    = string
+  default = "postgres"
+}
+
 variable "function" {
   type    = list(string)
   default = ["python310", "handler"]

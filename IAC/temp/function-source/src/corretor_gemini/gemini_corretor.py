@@ -14,7 +14,7 @@
 
 from promptweaver.clients.gemini.gemini_client import GeminiClient
 from promptweaver.core.prompt_template import PromptConfig
-from config import settings
+from config import require_setting, settings
 import pandas as pd
 import numpy as np
 import json
@@ -108,7 +108,10 @@ class Corretor():
                 caminho_prompweaver_sintetizador: str = settings.PROMPT_SUMARIZACAO,
                 config_prompweaver_justificativa: str = settings.PROMPT_VALIDACAO
                 ):
-        self.gemini_client = GeminiClient(project=settings.GCP_PROJECT_ID, location=settings.GCP_LOCATION)
+        self.gemini_client = GeminiClient(
+            project=require_setting(settings, "GCP_PROJECT_ID"),
+            location=require_setting(settings, "GCP_LOCATION"),
+        )
         self.config_prompweaver_corretor = caminho_prompweaver_corretor
         self.config_prompweaver_sintetizador = caminho_prompweaver_sintetizador
         self.config_prompweaver_justificativa = config_prompweaver_justificativa
