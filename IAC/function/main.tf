@@ -68,17 +68,31 @@ resource "google_cloudfunctions2_function" "default" {
     vpc_connector                  = google_vpc_access_connector.connector.name
     vpc_connector_egress_settings  = var.vpc_connector[2]
     environment_variables = {
-      LOG_EXECUTION_ID                  = "true"
-      GCP_PROJECT_ID                    = var.project_id
-      GCP_LOCATION                      = var.region
-      DB_USER                           = var.email_svc
-      DB_DATABASE                       = var.db_database
-      INSTANCE_CONNECTION_NAME          = "${var.project_id}:${var.region}:${var.cloudsql_name}"
-      DYNACONF_GCP_PROJECT_ID           = var.project_id
-      DYNACONF_GCP_LOCATION             = var.region
-      DYNACONF_DB_USER                  = var.email_svc
-      DYNACONF_DB_DATABASE              = var.db_database
-      DYNACONF_INSTANCE_CONNECTION_NAME = "${var.project_id}:${var.region}:${var.cloudsql_name}"
+      LOG_EXECUTION_ID                    = "true"
+      GCP_PROJECT_ID                      = var.project_id
+      GCP_LOCATION                        = var.region
+      DB_USER                             = var.email_svc
+      DB_DATABASE                         = var.db_database
+      INSTANCE_CONNECTION_NAME            = "${var.project_id}:${var.region}:${var.cloudsql_name}"
+      DRIVE_IMAGE_FETCH_ENABLED           = tostring(var.drive_image_fetch_enabled)
+      IMAGES_BUCKET_NAME                  = var.images_bucket_name
+      ALLOWED_DRIVE_FILE_IDS              = join(",", var.allowed_drive_file_ids)
+      ALLOWED_DRIVE_IDS                   = join(",", var.allowed_drive_ids)
+      ALLOWED_DRIVE_FOLDER_IDS            = join(",", var.allowed_drive_folder_ids)
+      ALLOWED_DRIVE_OWNER_EMAILS          = join(",", var.allowed_drive_owner_emails)
+      DRIVE_IMAGE_MAX_BYTES               = tostring(var.drive_image_max_bytes)
+      DYNACONF_GCP_PROJECT_ID             = var.project_id
+      DYNACONF_GCP_LOCATION               = var.region
+      DYNACONF_DB_USER                    = var.email_svc
+      DYNACONF_DB_DATABASE                = var.db_database
+      DYNACONF_INSTANCE_CONNECTION_NAME   = "${var.project_id}:${var.region}:${var.cloudsql_name}"
+      DYNACONF_DRIVE_IMAGE_FETCH_ENABLED  = tostring(var.drive_image_fetch_enabled)
+      DYNACONF_IMAGES_BUCKET_NAME         = var.images_bucket_name
+      DYNACONF_ALLOWED_DRIVE_FILE_IDS     = join(",", var.allowed_drive_file_ids)
+      DYNACONF_ALLOWED_DRIVE_IDS          = join(",", var.allowed_drive_ids)
+      DYNACONF_ALLOWED_DRIVE_FOLDER_IDS   = join(",", var.allowed_drive_folder_ids)
+      DYNACONF_ALLOWED_DRIVE_OWNER_EMAILS = join(",", var.allowed_drive_owner_emails)
+      DYNACONF_DRIVE_IMAGE_MAX_BYTES      = tostring(var.drive_image_max_bytes)
     }
   }
 
@@ -88,6 +102,25 @@ resource "google_cloudfunctions2_function" "default" {
     retry_policy   = var.trigger[2]
     pubsub_topic   = "projects/${var.project_id}/topics/${var.pubsub}"
 
+  }
+
+  lifecycle {
+    precondition {
+      condition = (
+        !var.drive_image_fetch_enabled || (
+          length(var.allowed_drive_file_ids) > 0 ||
+          length(var.allowed_drive_ids) > 0 ||
+          length(var.allowed_drive_folder_ids) > 0 ||
+          length(var.allowed_drive_owner_emails) > 0
+        )
+      )
+      error_message = "Enabling drive_image_fetch_enabled requires at least one Drive trust boundary allowlist (allowed_drive_file_ids, allowed_drive_ids, allowed_drive_folder_ids, or allowed_drive_owner_emails)."
+    }
+
+    precondition {
+      condition     = !var.drive_image_fetch_enabled || trimspace(var.images_bucket_name) != ""
+      error_message = "Enabling drive_image_fetch_enabled requires a non-empty images_bucket_name."
+    }
   }
 }
 

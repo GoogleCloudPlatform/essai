@@ -19,12 +19,11 @@ from sqlalchemy import select
 from src import DatabaseConnector
 from src.models import Requisicao
 from src.corretor_gemini import Correcao, Corretor
-from src.corretor_gemini.utils.imageUploader import ImageUploader
+from src.corretor_gemini.utils.imageUploader import rewrite_motivator_drive_links
 from uuid import UUID
 import json
 from datetime import datetime
 import pytz
-import re
 
 @functions_framework.cloud_event
 def handler(cloud_event):
@@ -53,19 +52,8 @@ def handler(cloud_event):
         result = session.execute(query).scalars().first()
 
         if result:
-            # Baixa imagens do drive e sobe para bucket
-            reg_links = r"https://drive\.google\.com/file/d/[^/]+\/view\?usp=sharing"
-            links_no_texto = re.findall(reg_links, result.TextosMotivadores)
-
-            images = []
-            for link in links_no_texto:
-                img = ImageUploader(link)
-                if not getattr(img, "fail", False):
-                    images.append(img)
-
-            texto_adaptado = result.TextosMotivadores
-            for img in images:
-                texto_adaptado.replace(img.url_original, img.url_cloudstorage)
+            # Baixa apenas imagens do Drive explicitamente autorizadas (fail-closed)
+            texto_adaptado = rewrite_motivator_drive_links(result.TextosMotivadores)
 
 
             # Instancia o Corretor

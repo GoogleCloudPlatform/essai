@@ -140,13 +140,14 @@ module "google_cloud_run" {
 }
 
 module "google_cloud_function" {
-  source        = "./function"
-  project_id    = var.project_id
-  network_name  = var.network_name
-  function_name = var.function_name
-  pubsub        = var.pubsub
-  email_svc     = var.email_svc
-  cloudsql_name = var.cloudsql_name
-  region        = var.region
-  depends_on    = [module.google_services, module.google_cloud_pub-sub, module.google_networks]
+  source             = "./function"
+  project_id         = var.project_id
+  network_name       = var.network_name
+  function_name      = var.function_name
+  pubsub             = var.pubsub
+  email_svc          = var.email_svc
+  cloudsql_name      = var.cloudsql_name
+  region             = var.region
+  images_bucket_name = var.cloud_storage_name
+  depends_on         = [module.google_services, module.google_cloud_pub-sub, module.google_networks, module.google_storage]
 }
